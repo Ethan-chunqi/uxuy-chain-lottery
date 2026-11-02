@@ -1,0 +1,116 @@
+UXUY official brand references and unmodified assets
+Retrieved: 2026-11-02 (Asia/Shanghai)
+
+Primary website:
+https://uxuy.com/ (HTTP 308 redirects to https://www.uxuy.com/)
+https://www.uxuy.com/
+Official brand/logo documentation, linked from official website:
+https://docs.uxuy.com/contact-us/brand-logo/
+Official downloadable brand archive:
+https://docs.uxuy.com/assets/uxuy-logos.zip
+Official GitHub organization linked from official website:
+https://github.com/uxuycom
+Official documentation source:
+https://github.com/uxuycom/uxuy-docsite/blob/main/docs/contact-us/brand-logo.md
+
+Verified website visual tokens (read from the currently served official CSS):
+https://www.uxuy.com/_next/static/chunks/2eotx01_2-qoz.css
+--palette-red-orange: #FE4200
+--brand: var(--palette-red-orange)
+--on-brand: #FFFFFF
+The root HTML uses the dark class. Its actual dark palette:
+--neutral-0 / --bg-1: #050505
+--neutral-1 / --bg-2: #101112
+--neutral-2 / --bg-3: #141617
+--neutral-3 / --bg-4: #242729
+--neutral-10 / --text-1: #FFFFFF
+--neutral-9 / --text-2: #C1CACC
+--neutral-8 / --text-3: #8B9699
+These are observed website design tokens, not a claim that each is a formal brand-standard colour. The official orange also occurs directly in the supplied SVG marks.
+
+Official website typography:
+--font-brand and --font-sans: Switzer, system-ui, sans-serif.
+The actual @font-face declarations load:
+https://www.uxuy.com/fonts/Switzer-Regular.woff2 (400)
+https://www.uxuy.com/fonts/Switzer-Medium.woff2 (500)
+https://www.uxuy.com/fonts/Switzer-Semibold.woff2 (600)
+The official CSS uses Inter Cyrillic fallback font files for Cyrillic code ranges. Chinese should retain an appropriate system CJK fallback. Switzer font files were obtained separately and directly from their official distributor Fontshare API, not copied from the UXUY website. Font rights are separate from logo/trademark rights; see the font references below.
+
+Logo usage and geometry:
+The current official header SVG is the compact original UXUY wordmark, viewBox 0 0 106 40. Two U letter forms and Y are white; the original three-piece X is #FE4200. Its seven original paths are retained exactly, not recreated with text fonts.
+The official brand archive provides white and black wordmark variants with orange X in a larger, padded viewBox 0 0 655 264, plus black-background square/circle original X symbols. Both compact website mark and padded archive wordmarks are official sources; choose one without mixing/retyping their geometry.
+No scripts, event handlers, external references or foreignObject exist in the downloaded SVGs. No recolouring, trimming, rescaling of path coordinates or geometry changes were performed; downloaded files are byte-identical to their official sources.
+
+Rights and use:
+UXUY retains trademark and copyright rights; these are official brand assets, not an MIT or CC0 asset license. The official documentation permits original logo use to refer to/link to UXUY products and says official-partnership announcements require approval. It requires maintaining original proportions, using original colours (or approved monochrome where needed), clear space and legibility, and avoiding implied endorsement or using the mark as an unrelated product's identity. This task's UXUY event page should preserve the actual UXUY mark and not invent collaboration/endorsement claims.
+
+Asset inventory / checksums:
+
+assets/uxuy-official-header.svg
+Source: https://www.uxuy.com/assets/svgs/header-logo.svg
+ViewBox: 0 0 106 40
+Bytes: 2311
+SHA-256: c00ca40ed36eded0c8cdbd32d0d558ab730e94aa7c974ecd42e94abdad0faf71
+Fills: #FE4200, none, white
+
+assets/uxuy-official-wordmark-white.svg
+Source: https://docs.uxuy.com/assets/uxuy-logos.zip :: UXUY logo/UXUY_logo_white.svg
+ViewBox: 0 0 655 264
+Bytes: 2387
+SHA-256: 07b2e5f8d9cdfd8dce730a7c71fa87db31b35db1cf821c9f1fd60c725a331da6
+Fills: #FE4200, none, white
+
+assets/uxuy-official-wordmark-black.svg
+Source: https://docs.uxuy.com/assets/uxuy-logos.zip :: UXUY logo/UXUY_logo_black.svg
+ViewBox: 0 0 655 264
+Bytes: 2387
+SHA-256: 16ee857829888b5ef4bf51bcb31e0a8a7c8eda098ad413d46c8c77e9eb36c7d3
+Fills: #FE4200, black, none
+
+assets/uxuy-official-symbol-square.svg
+Source: https://docs.uxuy.com/assets/uxuy-logos.zip :: UXUY logo/UXUY_logo_square.svg
+ViewBox: 0 0 1024 1024
+Bytes: 472
+SHA-256: e36438618fae1c7858f3221e45337328461713dfa9ab704e41ec3ea39c03a670
+Fills: #FE4200, black, none
+
+assets/uxuy-official-symbol-circle.svg
+Source: https://docs.uxuy.com/assets/uxuy-logos.zip :: UXUY logo/UXUY_logo_circle.svg
+ViewBox: 0 0 1024 1024
+Bytes: 523
+SHA-256: 7b1d5412e90ce0455fd647859289da1792a2834c3bec45818f6bdd5a0ea0d220
+Fills: #FE4200, black, none
+
+Switzer font files from original publisher / distributor
+The UXUY website declares Switzer, so this task fetched the same family and 400/500/600 weights directly from the font distributor.
+Fontshare / Indian Type Foundry family:
+https://www.fontshare.com/fonts/switzer
+Official CSS delivery endpoint:
+https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap
+Distributor background and free personal/commercial use statement:
+https://www.fontshare.com/about
+License: ITF Free Font License (FFL), not SIL OFL or MIT.
+https://www.fontshare.com/licenses/itf-ffl
+Primary Fontshare family license rendering with explicit self-hosting clause:
+https://www.fontshare.com/fonts/ranade
+FFL v2.0 (17 Aug 2026) permits personal/commercial use and self-hosting using CSS @font-face; third parties should obtain their own copy directly from Fontshare. Files here were obtained from the official Fontshare CDN addresses returned by its API, unmodified. Do not sell these font files or treat them as public-domain assets. The license and rights belong to Indian Type Foundry.
+
+assets/uxuy-official-switzer-regular.woff2
+Weight: 400
+Source: https://cdn.fontshare.com/wf/BLNB4FAQFNK56DWWNF7PMGTCOTZHOEII/ST3WKSSDMBK2MIQQO3MAVYWLF4FTOLFV/6IN5WOLRCYP4G4MOCOHOMXNON6Q7MDAR.woff2
+Bytes: 16728
+SHA-256: ddd9595560c35725e00d01667ce9bee519d245620e610844f0dd149df10b5d5f
+
+assets/uxuy-official-switzer-medium.woff2
+Weight: 500
+Source: https://cdn.fontshare.com/wf/OYB4CXKJQXKTNSLJMTDQOIVUL2V5EL7S/WYO2P7DQVV5RNXGMCUO2HL4RJP4VFUAS/6XPIMU23OJVRY676OG5YVJMWEHWICATX.woff2
+Bytes: 19564
+SHA-256: 7393d1abac009ede0da9f95d6c83479a08d798e28d3509575e02fb1d2346866f
+
+assets/uxuy-official-switzer-semibold.woff2
+Weight: 600
+Source: https://cdn.fontshare.com/wf/5SZVFDB7V52TI6ULVC6J3WQZQCIZVDV5/ODYPSTCUDMKSTYIPTV4CLQ7URIK7XYBJ/YS3VPNVO4B3TOJMEXDGFZQ4TLZGGSRZC.woff2
+Bytes: 19640
+SHA-256: d6497c264dbf70ae51add5103b6c7553dadff334b5853d09adf8c9f1c63ad36b
+
+Bag illustration: paper-bag artwork retains its original structure; its wordmark embeds the unmodified official black/orange SVG geometry from the UXUY brand ZIP.

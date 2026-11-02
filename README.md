@@ -1,4 +1,4 @@
-# UXUY 链上抽奖 · GitHub Pages 预览
+# UXUY 幸运大抽奖 · GitHub Pages 预览
 
 此 index.html 为自包含网站，图片、样式、二维码脚本及程序均已内联。使用真实 BNB Chain 主网 RPC，不需要钱包。
 
