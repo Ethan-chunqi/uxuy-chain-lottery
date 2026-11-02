@@ -1,0 +1,23 @@
+BNB Chain official logo asset
+Retrieved: 2026-11-02 (Asia/Shanghai)
+
+Local: assets/bnb-chain.svg
+Official brand-guidelines page:
+https://www.bnbchain.org/en/brand-guidelines
+Official download URL:
+https://www.bnbchain.org/images/brand-guidelines/svg/BNB%20Chain_Logo_Yellow.svg
+Equivalent official CDN URL:
+https://static.bnbchain.org/home-ui/static/images/brand-guidelines/svg/BNB%20Chain_Logo_Yellow.svg
+
+Asset: BNB Chain_Logo_Yellow.svg, official horizontal symbol + wordmark.
+Dimensions: 319 x 56; viewBox: 0 0 319 56.
+Original geometry, proportions and colours preserved byte-for-byte.
+SHA-256: 69c4390202dca23410fea6bb4c2b6b946429fdc06f2e73ffe8085e1dc6bc7746
+
+Technical inspection: valid SVG XML, only svg/path geometry; no scripts, event handlers, foreignObject, remote references or external dependencies. The XML namespace is not an external asset reference.
+
+Usage / rights summary (not an open-source software license):
+BNB Chain retains its brand/trademark rights. The primary brand-guidelines page provides this downloadable asset and permits a project-identification context for projects building on or powered by BNB Chain; it recommends prior brand approval and observing the brand guidelines. Do not treat the SVG as an MIT/CC0 asset.
+The site's use should identify BNB Chain as the chain/data source. Use neutral wording such as Powered by BNB Chain / BNB Chain data, without claiming official partnership, endorsement or sponsorship.
+Keep all original geometry and colours; no stretching, outline, gradient or drop shadow applied to the logo.
+For this horizontal lockup the stated minimum rendered width is 97 px. Prefer the yellow version on a quiet dark background with clear space. A light cream background offers weak contrast for yellow; a plain dark badge/card can contain the unchanged official yellow asset.
