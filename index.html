@@ -96,6 +96,35 @@ body::before{background:radial-gradient(ellipse at 42% -35%,#fe42000b,transparen
 .round-verdict[data-prize="empty"] #inline-award{display:flex;align-items:center}.inline-empty-symbol{display:inline-grid;width:29px;height:31px;max-width:none;margin:0 7px 0 0;vertical-align:middle;background:none;border-radius:0}.inline-empty-symbol .empty-star{font-size:25px;filter:none}.inline-empty-symbol .empty-spark{display:none}
 @media(max-width:380px){.site-header{padding-left:14px;padding-right:14px;gap:8px}.brand,.brand img{width:88px}.header-actions button{padding-left:6px;padding-right:6px;font-size:10px}.intro h1{font-size:26px;gap:8px}.intro h1>img{width:99px}}
 
+/* Keep the primary controls fixed through counting, reveal and reset. */
+:root{scrollbar-gutter:stable}
+.round-sequence-trail,.round-sequence-trail:empty,.sequence-space{display:flex;height:34px;min-height:34px;max-height:34px;margin:0;box-sizing:border-box;overflow-y:hidden}
+.round-sequence-trail{padding-top:7px;overscroll-behavior-x:contain;scroll-padding-inline:3px}
+.sequence-space{pointer-events:none}.sequence-step{align-self:flex-start}.display-description{height:32px;min-height:32px;overflow:hidden}
+.round-verdict-slot{position:relative;display:grid;grid-template-areas:"result";height:96px;min-height:96px;margin-top:18px}
+.round-verdict-slot>.round-verdict,.round-verdict-slot>.result-placeholder{grid-area:result;width:100%;height:100%;margin:0;min-width:0}
+.round-verdict-slot>.round-verdict{animation:verdict-in .22s ease-out;padding:14px 17px}
+.result-placeholder{display:flex;flex-direction:column;justify-content:center;gap:8px;padding:14px 17px;border:1px solid #e8ecf1;border-radius:12px;background:#f9fafc;color:#8994a1}.result-placeholder>span{font-size:10px}.result-placeholder>strong{font-size:18px;font-weight:500;color:#9ca5b1}
+.round-verdict-slot:has(.round-verdict:not([hidden]))>.result-placeholder{visibility:hidden}
+.inline-result-actions button{min-height:34px;padding:7px 2px 7px 10px}.auto-continue{font-variant-numeric:tabular-nums;min-width:9em;text-align:right}
+.hash-digits>span{backface-visibility:hidden}.number-reel>span{backface-visibility:hidden;transform-origin:50% 50%}
+.machine.waiting .draw-button>span:last-child{position:relative;width:18px;height:18px;font-size:0;flex-shrink:0}
+.machine.waiting .draw-button>span:last-child::before{content:"";position:absolute;inset:2px;border:1.5px solid #b5bfca;border-top-color:#fe4200;border-radius:50%;animation:pending-turn .9s linear infinite}
+@keyframes pending-turn{to{transform:rotate(360deg)}}
+/* Native dialog transitions retain the top layer during the short exit. */
+html:has(dialog[open]),body:has(dialog[open]){overflow:hidden}
+dialog{opacity:0;transform:translateY(7px) scale(.988);transition:opacity .18s ease,transform .2s cubic-bezier(.2,.8,.3,1),display .2s allow-discrete,overlay .2s allow-discrete;overscroll-behavior:contain}
+dialog[open]{opacity:1;transform:translateY(0) scale(1)}
+dialog::backdrop{background:#1a223c00;backdrop-filter:blur(0);transition:background .18s,backdrop-filter .18s,display .2s allow-discrete,overlay .2s allow-discrete}
+dialog[open]::backdrop{background:#1a223c70;backdrop-filter:blur(7px)}
+@starting-style{dialog[open]{opacity:0;transform:translateY(7px) scale(.988)}dialog[open]::backdrop{background:#1a223c00;backdrop-filter:blur(0)}}
+.result-celebrate{animation:none}.result-body,.dialog-body{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}.result-body{scrollbar-gutter:stable}.receipt-links>a{display:flex;align-items:center;min-height:34px;padding:5px 0}.record>button{min-height:36px}.result-proof>summary{min-height:36px}
+.round-screen-view .round-verdict-slot{height:106px}.round-screen-view .sequence-space{display:none}.round-screen-view .round-sequence-trail,.round-screen-view .round-sequence-trail:empty{height:48px;min-height:48px;max-height:48px}.round-screen-view .display-description{height:32px;min-height:32px}
+@media(max-width:650px){.round-sequence-trail,.round-sequence-trail:empty,.sequence-space{height:31px;min-height:31px;max-height:31px}.round-sequence-trail{padding-top:6px}.display-description{height:29px;min-height:29px}.round-verdict-slot{height:88px;min-height:88px;margin-top:15px}.round-verdict-slot>.round-verdict,.result-placeholder{padding:11px 12px;border-radius:9px}.result-placeholder>span{font-size:9px}.result-placeholder>strong{font-size:17px}.inline-result-actions button{font-size:10px;min-height:36px}.inline-result-actions{gap:0}.auto-continue{font-size:9px}.receipt-row{font-size:9px}.receipt-links{font-size:10px;gap:10px}.receipt-hash{font-size:9px}.record>button{font-size:10px;min-height:36px}.header-actions button{min-height:36px}.close-button{width:36px;height:36px}.round-screen-view .round-verdict-slot{height:96px;min-height:96px}}
+@media(prefers-reduced-motion:reduce){dialog,dialog::backdrop{transition:none!important}.machine.waiting .draw-button>span:last-child::before{animation:none!important}.round-verdict-slot>.round-verdict{animation:none!important}}
+.draw-button{height:52px;min-height:52px;line-height:1.2}.draw-button>span:first-child{white-space:nowrap}
+@media(max-width:650px){.draw-button{height:44px;min-height:44px}.machine-bottom{min-height:50px}}
+
 .prize-row[data-prize="suit"]{--rarity:#9d6910;background:linear-gradient(100deg,#fff8e9,#fffdf8 78%)}
 .prize-row[data-prize="hoodie"]{--rarity:#7856a8;background:linear-gradient(100deg,#f7f1ff,#fdfbff 78%)}
 .prize-row[data-prize="bull"]{--rarity:#3974ad;background:linear-gradient(100deg,#edf5ff,#fbfdff 78%)}
@@ -2754,10 +2783,15 @@ if (typeof window !== 'undefined') {
   let inlineDraw = null;
   let chargeStarted = 0;
   let chargeFrame = null;
-  let keyboardCharging = false;
+  let chargeSource = null;
+  let chargeKey = null;
+  let leverContact = null;
+  let suppressKeyboardClickUntil = 0;
   let suppressLeverClickUntil = 0;
   let leverPointerId = null;
+  let leverStartX = 0;
   let leverStartY = 0;
+  let leverSideLimit = 90;
   let leverTravel = 0;
   let leverSettleTimer = null;
   let leverChargeSoundAt = 0;
@@ -2778,6 +2812,9 @@ if (typeof window !== 'undefined') {
   let resultPresentationSerial = 0;
   const autoContinueStorageKey = `uxuy-auto-continue${pages ? ':' + new URL(pages.baseURL).pathname : ''}`;
   try { savedAutoContinue = JSON.parse(sessionStorage.getItem(autoContinueStorageKey) || 'null'); } catch {}
+  const htmlSignatures = new WeakMap();
+  const valueAnimations = new WeakMap();
+  let trailScrollFrame = null;
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function escapeHTML(value) { return String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char])); }
@@ -2814,11 +2851,38 @@ if (typeof window !== 'undefined') {
     finally { clearTimeout(timer); }
   }
   function post(path, data) { return api(path, { method: 'POST', body: JSON.stringify(data) }); }
+  function renderHTML(selector, html) {
+    const el = typeof selector === 'string' ? $(selector) : selector;
+    if (htmlSignatures.get(el) === html) return false;
+    el.innerHTML = html; htmlSignatures.set(el, html); return true;
+  }
+  function cancelValueAnimation(el) {
+    const animation = valueAnimations.get(el);
+    if (animation) { valueAnimations.delete(el); animation.cancel(); }
+  }
+  function animateValue(el, duration = 140, distance = 5) {
+    cancelValueAnimation(el);
+    if (reducedMotion || document.hidden || !el.animate) return;
+    const animation = el.animate([{ opacity: .7, transform: `translateY(${distance}px)` }, { opacity: 1, transform: 'translateY(0)' }], { duration, easing: 'cubic-bezier(.2,.7,.3,1)' });
+    valueAnimations.set(el, animation);
+    const done = () => { if (valueAnimations.get(el) === animation) valueAnimations.delete(el); };
+    animation.finished.then(done, done);
+  }
   function setDigits(selector, suffix, reveal = false) {
     const root = $(selector);
     root.classList.toggle('revealed', reveal);
     const chars = (suffix || '————').padEnd(4, '—').slice(-4).split('');
-    [...root.children].forEach((el, i) => { if (el.textContent !== chars[i]) { el.textContent = chars[i]; el.classList.remove('changed'); void el.offsetWidth; el.classList.add('changed'); } });
+    [...root.children].forEach((el, i) => {
+      if (el.textContent === chars[i]) return;
+      el.textContent = chars[i]; el.classList.remove('changed'); animateValue(el);
+    });
+  }
+  function setNumberDigit(value, animate = false) {
+    const el = $('#number-position'); const text = String(value);
+    if (el.textContent === text) return;
+    el.textContent = text;
+    if (animate) animateValue(el, numberRolling ? 45 : 110, numberRolling ? 2 : 4);
+    else cancelValueAnimation(el);
   }
   function linkTo(el, hash, display) {
     const url = chainLink(hash);
@@ -2859,8 +2923,8 @@ if (typeof window !== 'undefined') {
   }
   function renderFeedTape() {
     const recent = liveTransactions.slice(0, 6);
-    $('#transaction-tape').innerHTML = recent.length ? recent.map((tx, index) => `<a href="${chainLink(hashOf(tx))}" target="_blank" rel="noopener" title="查看真实链上交易"><small>${String(index + 1).padStart(2, '0')}</small>${escapeHTML(suffixOf(tx))}</a>`).join('') : '<span class="tape-placeholder">等待链上数据</span>';
-    $('#screen-recent').innerHTML = recent.length ? recent.map(tx => `<a href="${chainLink(hashOf(tx))}" target="_blank" rel="noopener">${escapeHTML(suffixOf(tx))}</a>`).join('') : '<span class="tape-placeholder">等待链上数据</span>';
+    renderHTML('#transaction-tape', recent.length ? recent.map((tx, index) => `<a href="${chainLink(hashOf(tx))}" target="_blank" rel="noopener" title="查看真实链上交易"><small>${String(index + 1).padStart(2, '0')}</small>${escapeHTML(suffixOf(tx))}</a>`).join('') : '<span class="tape-placeholder">等待链上数据</span>');
+    renderHTML('#screen-recent', recent.length ? recent.map(tx => `<a href="${chainLink(hashOf(tx))}" target="_blank" rel="noopener">${escapeHTML(suffixOf(tx))}</a>`).join('') : '<span class="tape-placeholder">等待链上数据</span>');
   }
   async function refreshLive() {
     if (liveBusy) return;
@@ -2888,12 +2952,13 @@ if (typeof window !== 'undefined') {
     const mainRows = Object.entries(PRIZES).map(([key, prize], index) => {
       const interval = list.find(item => item.key === key);
       const range = interval ? `${hex(interval.startHex ?? interval.start)}–${hex(interval.endHex ?? interval.end)}` : '已售罄';
-      return `<article data-prize="${key}" class="prize-row${key === 'suit' ? ' jackpot-row' : ''}${stock[key] <= 0 ? ' sold-out' : ''}${inlineDraw?.awardKey === key ? ' is-hit' : ''}"><span class="prize-no">0${index + 1}</span><div class="prize-range"><small>HASH SUFFIX / HEX</small><strong>${escapeHTML(range)}</strong></div><span class="prize-equals" aria-hidden="true">→</span><div class="prize-art"><img src="${window.UXUY_INLINE_ASSETS[prize.image]}" alt="${escapeHTML(prize.name)}手绘展示" loading="lazy"></div><div class="prize-title"><span class="prize-tier">${escapeHTML(RARITY[key])}</span><h3>${escapeHTML(prize.name)}</h3></div><div class="prize-info"></div></article>`;
+      return `<article data-prize="${key}" class="prize-row${key === 'suit' ? ' jackpot-row' : ''}${stock[key] <= 0 ? ' sold-out' : ''}"><span class="prize-no">0${index + 1}</span><div class="prize-range"><small>HASH SUFFIX / HEX</small><strong>${escapeHTML(range)}</strong></div><span class="prize-equals" aria-hidden="true">→</span><div class="prize-art"><img src="${window.UXUY_INLINE_ASSETS[prize.image]}" alt="${escapeHTML(prize.name)}手绘展示" loading="lazy"></div><div class="prize-title"><span class="prize-tier">${escapeHTML(RARITY[key])}</span><h3>${escapeHTML(prize.name)}</h3></div><div class="prize-info"></div></article>`;
     }).join('');
     const empty = list.find(item => item.key === 'empty');
     const emptyRange = empty ? `${hex(empty.startHex ?? empty.start)}–${hex(empty.endHex ?? empty.end)}` : '无未中奖区间';
-    $('#prize-list').innerHTML = mainRows + `<article data-prize="empty" class="prize-row empty-prize-row${inlineDraw?.awardKey === 'empty' ? ' is-hit' : ''}"><span class="prize-no">05</span><div class="prize-range"><small>HASH SUFFIX / HEX</small><strong>${escapeHTML(emptyRange)}</strong></div><span class="prize-equals" aria-hidden="true">→</span><div class="prize-art empty-award-art" aria-hidden="true">${emptySparkles()}</div><div class="prize-title"><span class="prize-tier">未中奖</span><h3>本轮未中奖</h3></div><div class="prize-info"></div></article>`;
-    $('#rule-table-body').innerHTML = list.map(item => `<tr><td>${escapeHTML(hex(item.startHex ?? item.start))}–${escapeHTML(hex(item.endHex ?? item.end))}</td><td>${escapeHTML(item.name || PRIZES[item.key]?.name || '未中奖')}</td></tr>`).join('');
+    renderHTML('#prize-list', mainRows + `<article data-prize="empty" class="prize-row empty-prize-row"><span class="prize-no">05</span><div class="prize-range"><small>HASH SUFFIX / HEX</small><strong>${escapeHTML(emptyRange)}</strong></div><span class="prize-equals" aria-hidden="true">→</span><div class="prize-art empty-award-art" aria-hidden="true">${emptySparkles()}</div><div class="prize-title"><span class="prize-tier">未中奖</span><h3>本轮未中奖</h3></div><div class="prize-info"></div></article>`);
+    $$('.prize-row').forEach(el => el.classList.toggle('is-hit', Boolean(inlineDraw) && el.dataset.prize === inlineDraw.awardKey));
+    renderHTML('#rule-table-body', list.map(item => `<tr><td>${escapeHTML(hex(item.startHex ?? item.start))}–${escapeHTML(hex(item.endHex ?? item.end))}</td><td>${escapeHTML(item.name || PRIZES[item.key]?.name || '未中奖')}</td></tr>`).join(''));
     $('#rules-version').textContent = `本场模式 ${mode === 'formal' ? '正式' : '预览'} · 规则版本 ${state?.ruleVersion || '—'} · 每轮保存独立规则快照`;
   }
   function updateState(next) {
@@ -3000,7 +3065,7 @@ if (typeof window !== 'undefined') {
     } catch (error) {
       requestBusy = false;
       stopNumberRoll();
-      if (!currentDraw?.position) { $('#number-position').textContent = '?'; $('#number-caption').textContent = `等待${clockOwner}锁定`; }
+      if (!currentDraw?.position) { setNumberDigit('?'); $('#number-caption').textContent = `等待${clockOwner}锁定`; }
       if (error.code === 'BUSY' || error.code === 'busy' || error.status === 409) {
         const next = await api(`/api/state?mode=${mode}`).catch(() => null);
         if (next?.pending) { updateState(next); pendingId = typeof next.pending === 'object' ? next.pending.id : next.pending; currentDraw = typeof next.pending === 'object' ? next.pending : { id: pendingId, status: 'pending' }; savePending(pendingId); }
@@ -3074,16 +3139,16 @@ if (typeof window !== 'undefined') {
     $('.bag-reel .reel-strip').innerHTML = reelMarkup('bag');
     $('.bag-reel').classList.remove('bag-won');
     let digit = 1;
-    $('#number-position').textContent = String(digit);
-    const tick = () => { if (!numberRolling) return; digit = digit % 9 + 1; $('#number-position').textContent = String(digit); tone(100 + digit * 20, .025, 'triangle', .01); const progress = Math.min(1, (performance.now() - started) / settings.duration); const interval = reducedMotion ? 250 : progress < .18 ? 100 - progress * 300 : progress < .65 ? 42 : 42 + (progress - .65) * 230; numberTimer = setTimeout(tick, interval); };
+    setNumberDigit(digit);
+    const tick = () => { if (!numberRolling) return; digit = digit % 9 + 1; setNumberDigit(digit, true); tone(100 + digit * 20, .025, 'triangle', .01); const progress = Math.min(1, (performance.now() - started) / settings.duration); const interval = reducedMotion ? 250 : progress < .18 ? 100 - progress * 300 : progress < .65 ? 42 : 42 + (progress - .65) * 230; numberTimer = setTimeout(tick, interval); };
     numberTimer = setTimeout(tick, reducedMotion ? 250 : 100);
   }
-  function stopNumberRoll() { clearTimeout(numberTimer); numberTimer = null; numberRolling = false; numberPresentation = null; $('#number-reel')?.classList.remove('rolling'); }
+  function stopNumberRoll() { cancelValueAnimation($('#number-position')); clearTimeout(numberTimer); numberTimer = null; numberRolling = false; numberPresentation = null; $('#number-reel')?.classList.remove('rolling'); }
   function resetSelector() {
     stopNumberRoll(); currentDraw = null;
     $('#selector-clock').classList.remove('clock-frozen');
     resetRoundScreen();
-    $('#number-position').textContent = '?'; $('#number-caption').textContent = '1–9 · 等待锁定';
+    setNumberDigit('?'); $('#number-caption').textContent = '1–9 · 等待锁定';
     $('.number-window').classList.remove('number-locked');
     $('#selector-state').textContent = '数字停在 X，就取锁定时间后的第 X 笔交易。';
     $('#selector-source').textContent = '按区块高度、交易索引依次计数，最终确认后开奖。';
@@ -3096,6 +3161,7 @@ if (typeof window !== 'undefined') {
   function resetRoundScreen(draw = null) {
     releaseSyncedFeed(syncedRoundGeneration);
     roundGeneration++; roundDraw = draw; roundShown = 0; roundPlaybackPromise = null; inlineDraw = null; fullyPlayedDrawId = null; queuedAutoResult = null;
+    cancelAnimationFrame(trailScrollFrame); trailScrollFrame = null;
     roundTrail().replaceChildren();
     setDigits('#round-digits', '————');
     $('.round-panel').classList.remove('round-stopped');
@@ -3137,6 +3203,9 @@ if (typeof window !== 'undefined') {
     const item = document.createElement('li'); item.className = `sequence-step is-current${Number(tx.ordinal) === Number(target) ? ' is-final' : ''}${restored ? ' is-restored' : ''}`; item.dataset.ordinal = String(tx.ordinal);
     item.innerHTML = `<span>${String(tx.ordinal).padStart(2, '0')}</span><a href="${chainLink(hashOf(tx))}" target="_blank" rel="noopener">${escapeHTML(suffixOf(tx))}</a>`;
     trail.append(item);
+    const generation = roundGeneration;
+    cancelAnimationFrame(trailScrollFrame);
+    trailScrollFrame = requestAnimationFrame(() => { trailScrollFrame = null; if (generation === roundGeneration && trail.scrollTo) trail.scrollTo({ left: trail.scrollWidth, behavior: restored || reducedMotion ? 'auto' : 'smooth' }); });
   }
   function acceptRoundSequence(draw) {
     if (!draw?.position) return Promise.resolve();
@@ -3225,7 +3294,7 @@ if (typeof window !== 'undefined') {
     paintLockedClock(draw);
     if (numberPresentationActive(draw.id)) return false;
     stopNumberRoll();
-    $('#number-position').textContent = String(draw.position);
+    setNumberDigit(draw.position, true);
     $('#number-caption').textContent = `已锁定 · 第 ${draw.position} 笔`;
     $('.number-window').classList.add('number-locked');
     $('#selector-state').textContent = `取此时间后，按链上顺序的第 ${draw.position} 笔交易。`;
@@ -3307,22 +3376,6 @@ if (typeof window !== 'undefined') {
     queuedAutoResult = null;
     showResult(draw, false, true);
   }
-  async function spinOne(el, symbol, index) {
-    const strip = $('.reel-strip', el);
-    const symbols = ['x', 'u-light', 'uxuy-logo-light', 'y-light'];
-    const turns = reducedMotion ? 1 : 12 + index * 3;
-    const list = Array.from({ length: turns }, (_, i) => index === 3 ? (i % 2 ? 'bag' : 'no-bag') : symbols[(i + index) % symbols.length]);
-    list.push(symbol);
-    strip.innerHTML = list.map(reelMarkup).join('');
-    strip.style.transform = 'translateY(0)';
-    const height = strip.firstElementChild?.getBoundingClientRect().height || el.clientHeight;
-    const animation = strip.animate([{ transform: 'translateY(0)' }, { transform: `translateY(-${turns * height}px)` }], { duration: reducedMotion ? 100 : index === 3 ? 1200 : 1750 + index * 310, easing: 'cubic-bezier(.14,.7,.2,1)', fill: 'forwards' });
-    try { await animation.finished; } catch {}
-    animation.cancel();
-    strip.innerHTML = reelMarkup(symbol);
-    strip.style.transform = '';
-    tone(220 + index * 95, .055, 'triangle', .025);
-  }
   async function revealDraw(draw) {
     if (numberPresentationActive(draw?.id) && (!(await waitForNumberPresentation(draw.id)) || currentDraw?.id !== draw.id)) return;
     if (revealing || draw.status !== 'completed') return;
@@ -3343,24 +3396,11 @@ if (typeof window !== 'undefined') {
       if (played === false) { errorText('#draw-error', '本轮交易序列不一致，等待复核。'); return; }
       if (!stillCurrent() || !stopRoundAtResult(draw)) return;
       fullyPlayedDrawId = draw.id; playbackComplete = true;
-      showRoundResult(draw, true);
+      staticReels(draw); showRoundResult(draw);
       tone(440, .15, 'triangle', .035);
       $('#draw-heading').textContent = draw.awardKey === 'empty' ? '本轮未中奖' : draw.awardName || PRIZES[draw.awardKey]?.name;
-      if (draw.awardKey !== 'empty') {
-        $('#draw-description').textContent = '正在揭晓附属奖励';
-        $('.bag-reel').classList.add('revealing');
-        await wait(reducedMotion ? 80 : 300);
-        if (!stillCurrent()) return;
-        await spinOne($('.bag-reel'), draw.bag ? 'bag' : 'no-bag', 3);
-        if (!stillCurrent()) return;
-        $('.bag-reel').classList.remove('revealing');
-        celebratorySound(draw.bag);
-      } else { $('.bag-reel .reel-strip').innerHTML = reelMarkup('no-bag'); }
-      if (!stillCurrent()) return;
-      $('.bag-reel').classList.toggle('bag-won', Boolean(draw.bag));
-      $('#bonus-inline-label').textContent = draw.awardKey === 'empty' ? '✨ 下次好运' : draw.bag ? '附赠 UXUY 手提袋' : '本轮未加赠手提袋';
-      showRoundResult(draw);
-      await wait(250);
+      if (draw.awardKey !== 'empty') celebratorySound(draw.bag);
+      await wait(150);
       if (!stillCurrent()) return;
       presentedDraws.add(draw.id);
       pendingId = null; savePending(null);
@@ -3380,7 +3420,7 @@ if (typeof window !== 'undefined') {
   }
   function renderLastDraw(draw) {
     if (!draw || draw.status !== 'completed') return;
-    $('#screen-last').innerHTML = `<b>${escapeHTML(suffixOf(draw))}</b>${escapeHTML(draw.awardName || PRIZES[draw.awardKey]?.name || '未中奖')}<small>${draw.bag ? '另获 UXUY 手提袋加赠 · ' : ''}${escapeHTML(datetime(draw.completedAt))} · ${mode === 'formal' ? '正式场' : '预览场'}</small>`;
+    renderHTML('#screen-last', `<b>${escapeHTML(suffixOf(draw))}</b>${escapeHTML(draw.awardName || PRIZES[draw.awardKey]?.name || '未中奖')}<small>${draw.bag ? '另获 UXUY 手提袋加赠 · ' : ''}${escapeHTML(datetime(draw.completedAt))} · ${mode === 'formal' ? '正式场' : '预览场'}</small>`);
   }
   async function resultPaint() {
     if (document.hidden) await new Promise(resolve => { const onVisible = () => { if (!document.hidden) { document.removeEventListener('visibilitychange', onVisible); resolve(); } }; document.addEventListener('visibilitychange', onVisible); });
@@ -3393,7 +3433,7 @@ if (typeof window !== 'undefined') {
     const images = $$('img', gift);
     const decoded = await Promise.race([
       Promise.all(images.map(async img => { try { if (img.decode) await img.decode(); else if (!img.complete) await new Promise(resolve => { img.addEventListener('load', resolve, { once: true }); img.addEventListener('error', resolve, { once: true }); }); return { img, ok: img.naturalWidth > 0 }; } catch { return { img, ok: false }; } })),
-      wait(2500).then(() => images.map(img => ({ img, ok: false })))
+      wait(2500).then(() => images.map(img => ({ img, ok: Boolean(img.complete && img.naturalWidth > 0) })))
     ]);
     if (resultPresentation !== presentation) return;
     if (ownsDOM()) {
@@ -3503,14 +3543,16 @@ if (typeof window !== 'undefined') {
   function renderRecords() {
     const history = winnerRecordsMode === mode ? winnerRecords : [];
     $('#records-summary').textContent = `${mode === 'formal' ? '正式场' : '预览场'} · 最近 ${history.length} 条中奖记录`;
-    $('#records-list').innerHTML = history.length ? history.map((draw, index) => `<article class="record"><span class="record-suffix">${escapeHTML(suffixOf(draw))}</span><div class="record-main"><strong>${escapeHTML(draw.awardName || PRIZES[draw.awardKey].name)}${draw.bag ? ' ＋ 手提袋' : ''}</strong><p>${escapeHTML(datetime(draw.completedAt || draw.createdAt))} · ${draw.acknowledgedAt ? '本轮结束' : '结果已保存'}</p></div><button type="button" data-record="${index}">查验 ↗</button></article>`).join('') : `<p class="record-empty">${winnerRecordsError ? '暂无法读取中奖记录' : winnerRecordsLoaded ? '暂无中奖记录' : '正在读取中奖记录…'}</p>`;
-    $$('[data-record]').forEach(button => button.addEventListener('click', () => { const draw = history[Number(button.dataset.record)]; if (draw.status === 'completed') { $('#records-dialog').close(); showResult(draw, true); } else toast('此轮正在等待链上确认。'); }));
+    const focused = document.activeElement?.closest?.('[data-record]');
+    const focusedId = focused && $('#records-list').contains(focused) ? focused.dataset.record : null;
+    const changed = renderHTML('#records-list', history.length ? history.map(draw => `<article class="record"><span class="record-suffix">${escapeHTML(suffixOf(draw))}</span><div class="record-main"><strong>${escapeHTML(draw.awardName || PRIZES[draw.awardKey].name)}${draw.bag ? ' ＋ 手提袋' : ''}</strong><p>${escapeHTML(datetime(draw.completedAt || draw.createdAt))} · ${draw.acknowledgedAt ? '本轮结束' : '结果已保存'}</p></div><button type="button" data-record="${escapeHTML(draw.id)}">查验 ↗</button></article>`).join('') : `<p class="record-empty">${winnerRecordsError ? '暂无法读取中奖记录' : winnerRecordsLoaded ? '暂无中奖记录' : '正在读取中奖记录…'}</p>`);
+    if (changed && focusedId) $$('[data-record]', $('#records-list')).find(button => button.dataset.record === focusedId)?.focus({ preventScroll: true });
   }
   function renderAdmin() {
     $('#admin-mode-copy').textContent = mode === 'formal' ? '当前查看正式场。正式开奖扣减正式库存；活动开启后不可重置。' : '当前查看预览场。预览库存与正式库存完全独立，预览结果不用于现场兑奖。';
     const stats = [['累计抽奖', state?.drawn], ['主奖中奖', state?.mainWins], ['手提袋加赠', state?.bagWins], ['未中奖', state?.empty]];
-    $('#admin-stats').innerHTML = stats.map(([label, count]) => `<div class="admin-stat"><b>${num(count)}</b><span>${label}</span></div>`).join('');
-    $('#admin-stock').innerHTML = Object.entries(INITIAL).map(([key, total]) => `<div class="admin-stock-item"><span>${PRIZES[key]?.name || 'UXUY 手提袋 · 附属奖励'}</span><span><b>${num(state?.stock?.[key] ?? total)}</b> / ${num(total)}</span></div>`).join('');
+    renderHTML('#admin-stats', stats.map(([label, count]) => `<div class="admin-stat"><b>${num(count)}</b><span>${label}</span></div>`).join(''));
+    renderHTML('#admin-stock', Object.entries(INITIAL).map(([key, total]) => `<div class="admin-stock-item"><span>${PRIZES[key]?.name || 'UXUY 手提袋 · 附属奖励'}</span><span><b>${num(state?.stock?.[key] ?? total)}</b> / ${num(total)}</span></div>`).join(''));
     $('#switch-preview').disabled = mode === 'preview' || Boolean(pendingId || revealing || autoContinue);
     $('#switch-formal').disabled = Boolean(pages) || mode === 'formal' || Boolean(pendingId || revealing || autoContinue);
     $('#reset-preview').disabled = Boolean(pendingId || revealing || autoContinue) || !state?.isAdmin;
@@ -3552,7 +3594,7 @@ if (typeof window !== 'undefined') {
     if (target) { const el = $(target); el?.classList.remove('lever-attention'); void el?.offsetWidth; el?.classList.add('lever-attention'); setTimeout(() => el?.classList.remove('lever-attention'), 1300); }
   }
   function attemptLeverDraw(animationPower = .15) {
-    if (requestBusy || pendingId || revealing) { leverNotice('本轮开奖中，请稍候。', '.round-hash-screen'); updateControls(); return; }
+    if (requestBusy || pendingId || revealing || autoContinue) { leverNotice(autoContinue ? '结果展示中，稍后自动继续。' : '本轮开奖中，请稍候。', '.round-hash-screen'); updateControls(); return; }
     const last = state?.lastDraw;
     if (last?.status === 'completed' && !last.acknowledgedAt) {
       ensureAutoContinue(last);
@@ -3578,10 +3620,12 @@ if (typeof window !== 'undefined') {
     if (reset) leverMotion.angle = LEVER_REST;
     writeLeverMotion();
   }
-  function trackLeverMotion(power) {
+  function trackLeverMotion(power, direct = false) {
     cancelAnimationFrame(leverMotion.frame); leverMotion.frame = null;
     const now = performance.now();
-    const target = LEVER_REST + (LEVER_FULL - LEVER_REST) * (.1 + .9 * Math.max(0, Math.min(1, power)));
+    let target = LEVER_REST + (LEVER_FULL - LEVER_REST) * (.1 + .9 * Math.max(0, Math.min(1, power)));
+    if (direct) leverContact = null;
+    if (leverContact) { const progress = Math.max(0, Math.min(1, (now - leverContact.started) / 80)); target = leverContact.angle + (target - leverContact.angle) * (progress * progress * (3 - 2 * progress)); if (progress >= 1) leverContact = null; }
     const dt = Math.max(.008, Math.min(.04, (now - (leverMotion.last || now - 16.667)) / 1000));
     leverMotion.velocity = Math.max(-1100, Math.min(1100, (target - leverMotion.angle) / dt));
     leverMotion.angle = target; leverMotion.last = now; leverMotion.mode = 'tracking'; writeLeverMotion();
@@ -3628,25 +3672,35 @@ if (typeof window !== 'undefined') {
     };
     writeLeverMotion(); leverMotion.frame = requestAnimationFrame(step);
   }
-  function reboundLever(force = .3, cancelled = false, tapStroke = false) {
+  function reboundLever(force = .3, cancelled = false, tapStroke = false, preservePower = false) {
     const lever = $('#lever'); clearTimeout(leverSettleTimer);
     lever.classList.remove('is-charging', 'is-rebounding', 'pulled');
     lever.style.removeProperty('--pull');
     lever.style.setProperty('--release-power', String(Math.max(.25, force)));
     lever.classList.add('is-rebounding');
     $('.machine').classList.remove('lever-impulse'); void $('.machine').offsetWidth; $('.machine').classList.add('lever-impulse');
-    $('#lever-meter').setAttribute('aria-valuenow', String(cancelled ? 0 : Math.round(force * 100)));
-    $('#lever-meter').style.setProperty('--power', String(cancelled ? 0 : force));
+    if (cancelled || !preservePower) {
+      $('#lever-meter').setAttribute('aria-valuenow', String(cancelled ? 0 : Math.round(force * 100)));
+      $('#lever-meter').style.setProperty('--power', String(cancelled ? 0 : force));
+      if ($('#lever-power-value')) $('#lever-power-value').textContent = cancelled ? '0% · 1.0–3.0s' : `${Math.round(force * 100)}% · 数字转动 ${(animationSettings(force).duration / 1000).toFixed(1)}s`;
+    }
     $('#lever-feedback').textContent = cancelled ? '拉住蓄力，松手开转' : force < .34 ? '轻拉释放' : force < .7 ? '中力释放' : '重拉释放';
     if (tapStroke && !cancelled) pressLeverStroke(force); else springLeverHome();
     tone(cancelled ? 145 : 190 + force * 130, .1, 'triangle', .035);
     if (navigator.vibrate && !cancelled) navigator.vibrate(force > .8 ? [16, 18, 28] : 18);
     leverSettleTimer = setTimeout(() => { lever.classList.remove('is-rebounding'); $('.machine').classList.remove('lever-impulse'); lever.style.removeProperty('--release-power'); }, reducedMotion ? 100 : 1500);
   }
-  function beginCharge(fromKeyboard = false) {
-    if (chargeStarted || isScreen || isRoundScreen || verifyId) return;
+  function beginCharge(source = 'pointer', key = null) {
+    if (chargeStarted || isScreen || isRoundScreen || verifyId) return false;
+    if (requestBusy || pendingId || revealing || autoContinue || (state?.lastDraw?.status === 'completed' && !state.lastDraw.acknowledgedAt)) {
+      suppressLeverClickUntil = performance.now() + 800;
+      reboundLever(.15, false, true, true);
+      leverNotice(autoContinue || (state?.lastDraw?.status === 'completed' && !state.lastDraw.acknowledgedAt) ? '结果展示中，稍后自动继续。' : '本轮开奖中，请稍候。');
+      return false;
+    }
     unlockAudio(); stopLeverMotion(false);
-    chargeStarted = performance.now(); keyboardCharging = fromKeyboard; leverTravel = 0; leverChargeSoundAt = 0;
+    chargeStarted = performance.now(); chargeSource = source; chargeKey = source === 'keyboard' ? key : null;
+    leverContact = { started: chargeStarted, angle: leverMotion.angle }; leverTravel = 0; leverChargeSoundAt = 0;
     clearTimeout(leverSettleTimer); $('#lever').classList.remove('is-rebounding', 'pulled');
     $('#lever').classList.add('is-charging'); $('#lever-feedback').textContent = '拉住蓄力，松手开转';
     const frame = () => {
@@ -3659,21 +3713,32 @@ if (typeof window !== 'undefined') {
       if (power >= 1) $('#lever-feedback').textContent = '蓄力完成，松手开转';
       chargeFrame = requestAnimationFrame(frame);
     };
-    frame(); tone(110, .09, 'triangle', .025);
+    frame(); tone(110, .09, 'triangle', .025); return true;
   }
-  function releaseCharge(cancel = false) {
-    if (!chargeStarted) return;
+  function releaseCharge(cancel = false, source = chargeSource, key = chargeKey) {
+    if (!chargeStarted || (!cancel && (source !== chargeSource || (source === 'keyboard' && key !== chargeKey)))) return;
     const heldMs = performance.now() - chargeStarted;
     const rawForce = Math.min(1, Math.max(leverTravel, heldMs / 3000));
     const tapStroke = !cancel && leverTravel < .08 && heldMs < 260;
     const force = rawForce < .025 ? .15 : rawForce;
-    chargeStarted = 0; keyboardCharging = false; cancelAnimationFrame(chargeFrame);
+    chargeStarted = 0; chargeSource = null; chargeKey = null; leverContact = null; cancelAnimationFrame(chargeFrame); chargeFrame = null;
     const previousPointer = leverPointerId; leverPointerId = null;
     try { if (previousPointer !== null && $('#lever').hasPointerCapture(previousPointer)) $('#lever').releasePointerCapture(previousPointer); } catch {}
     $('#lever').classList.remove('is-charging'); $('#lever').style.removeProperty('--pull');
-    suppressLeverClickUntil = performance.now() + 800;
+    suppressLeverClickUntil = performance.now() + 800; suppressKeyboardClickUntil = performance.now() + 800;
     reboundLever(force, cancel, tapStroke);
     if (!cancel) attemptLeverDraw(force);
+  }
+  function cancelLeverInteraction() {
+    const wasCharging = Boolean(chargeStarted);
+    chargeStarted = 0; chargeSource = null; chargeKey = null; leverContact = null;
+    cancelAnimationFrame(chargeFrame); chargeFrame = null; clearTimeout(leverSettleTimer);
+    const previousPointer = leverPointerId; leverPointerId = null;
+    try { if (previousPointer !== null && $('#lever').hasPointerCapture(previousPointer)) $('#lever').releasePointerCapture(previousPointer); } catch {}
+    stopLeverMotion(); $('#lever').classList.remove('is-charging', 'is-rebounding', 'pulled');
+    $('#lever').style.removeProperty('--pull'); $('#lever').style.removeProperty('--release-power'); $('.machine').classList.remove('lever-impulse');
+    if (wasCharging) { $('#lever-meter').style.setProperty('--power', '0'); $('#lever-meter').setAttribute('aria-valuenow', '0'); $('#lever-feedback').textContent = '拉住蓄力，松手开转'; if ($('#lever-power-value')) $('#lever-power-value').textContent = '0% · 1.0–3.0s'; }
+    suppressLeverClickUntil = performance.now() + 800; suppressKeyboardClickUntil = performance.now() + 800;
   }
   function installEvents() {
     $$('[data-dialog]').forEach(button => button.addEventListener('click', () => openDialog(button.dataset.dialog)));
@@ -3683,19 +3748,51 @@ if (typeof window !== 'undefined') {
     stopLeverMotion();
     $('#draw-button').addEventListener('click', () => { reboundLever(.15, false, true); startDraw(.15); });
     $('#lever').removeAttribute('aria-pressed');
-    $('#lever').addEventListener('click', event => { if (performance.now() < suppressLeverClickUntil) { event.preventDefault(); return; } unlockAudio(); reboundLever(.15, false, true); attemptLeverDraw(.15); });
-    $('#lever').addEventListener('pointerdown', event => { if ($('#lever').disabled || event.button > 0 || chargeStarted) return; event.preventDefault(); leverPointerId = event.pointerId; leverStartY = event.clientY; beginCharge(); try { $('#lever').setPointerCapture(event.pointerId); } catch {} });
+    $('#lever').addEventListener('click', event => { if (chargeStarted || performance.now() < suppressLeverClickUntil || (event.detail === 0 && performance.now() < suppressKeyboardClickUntil)) { event.preventDefault(); return; } unlockAudio(); reboundLever(.15, false, true, Boolean(requestBusy || pendingId || revealing || autoContinue || (state?.lastDraw?.status === 'completed' && !state.lastDraw.acknowledgedAt))); attemptLeverDraw(.15); });
+    $('#lever').addEventListener('pointerdown', event => {
+      if ($('#lever').disabled || event.button > 0) return;
+      event.preventDefault(); if (chargeStarted || !beginCharge('pointer')) return;
+      leverPointerId = event.pointerId; leverStartX = event.clientX; leverStartY = event.clientY; leverSideLimit = $('#lever').clientWidth <= 80 ? 80 : 90;
+      try { $('#lever').setPointerCapture(event.pointerId); } catch {}
+    });
     for (const name of ['contextmenu', 'dragstart']) $('#lever').addEventListener(name, event => event.preventDefault());
-    $('#lever').addEventListener('pointermove', event => { if (chargeStarted && event.pointerId === leverPointerId) { event.preventDefault(); leverTravel = Math.max(0, Math.min(1, (event.clientY - leverStartY) / 110)); trackLeverMotion(Math.min(1, Math.max(leverTravel, (performance.now() - chargeStarted) / 3000))); } });
-    $('#lever').addEventListener('pointerup', event => { if (event.pointerId !== leverPointerId) return; event.preventDefault(); releaseCharge(); });
-    $('#lever').addEventListener('pointercancel', event => { if (event.pointerId === leverPointerId) releaseCharge(true); });
-    $('#lever').addEventListener('lostpointercapture', event => { if (chargeStarted && event.pointerId === leverPointerId) releaseCharge(true); });
-    window.addEventListener('pointerup', event => { if (chargeStarted && event.pointerId === leverPointerId) releaseCharge(); });
-    $('#lever').addEventListener('keydown', event => { if ((event.code === 'Space' || event.code === 'Enter') && !event.repeat) { event.preventDefault(); beginCharge(true); } });
-    $('#lever').addEventListener('keyup', event => { if (event.code === 'Space' || event.code === 'Enter') { event.preventDefault(); releaseCharge(); } });
-    document.addEventListener('keydown', event => { if (event.code === 'Space' && !event.repeat && !$$('dialog[open]').length && !/INPUT|TEXTAREA|SELECT|BUTTON|A/.test(document.activeElement?.tagName || '')) { event.preventDefault(); beginCharge(true); } });
-    document.addEventListener('keyup', event => { if (event.code === 'Space' && keyboardCharging) { event.preventDefault(); releaseCharge(); } });
-    window.addEventListener('blur', () => releaseCharge(true));
+    $('#lever').addEventListener('pointermove', event => {
+      if (chargeSource !== 'pointer' || event.pointerId !== leverPointerId) return;
+      event.preventDefault();
+      const dx = event.clientX - leverStartX; const dy = event.clientY - leverStartY;
+      if (dy < -24 || (Math.abs(dx) > leverSideLimit && dy < 16 && Math.abs(dx) > Math.abs(dy) * 2)) { releaseCharge(true); return; }
+      leverTravel = Math.max(0, Math.min(1, dy / 110));
+      trackLeverMotion(Math.min(1, Math.max(leverTravel, (performance.now() - chargeStarted) / 3000)), dy > 8);
+    });
+    $('#lever').addEventListener('pointerup', event => { if (chargeSource !== 'pointer' || event.pointerId !== leverPointerId) return; event.preventDefault(); releaseCharge(false, 'pointer'); });
+    $('#lever').addEventListener('pointercancel', event => { if (chargeSource === 'pointer' && event.pointerId === leverPointerId) releaseCharge(true); });
+    $('#lever').addEventListener('lostpointercapture', event => { if (chargeSource === 'pointer' && event.pointerId === leverPointerId) releaseCharge(true); });
+    window.addEventListener('pointerup', event => { if (chargeSource === 'pointer' && event.pointerId === leverPointerId) releaseCharge(false, 'pointer'); });
+    $('#lever').addEventListener('keydown', event => {
+      if (event.code !== 'Space' && event.code !== 'Enter') return;
+      event.preventDefault(); suppressKeyboardClickUntil = performance.now() + 800;
+      if (!event.repeat && !chargeStarted) beginCharge('keyboard', event.code);
+    });
+    $('#lever').addEventListener('keyup', event => {
+      if (event.code !== 'Space' && event.code !== 'Enter') return;
+      event.preventDefault(); suppressKeyboardClickUntil = performance.now() + 800;
+      if (chargeSource === 'keyboard' && event.code === chargeKey) releaseCharge(false, 'keyboard', event.code);
+    });
+    document.addEventListener('keydown', event => {
+      if (event.code !== 'Space' || event.defaultPrevented) return;
+      const ownsKey = chargeSource === 'keyboard' && chargeKey === event.code;
+      const eligible = !$$('dialog[open]').length && !document.activeElement?.isContentEditable && !/INPUT|TEXTAREA|SELECT|BUTTON|A/.test(document.activeElement?.tagName || '');
+      if (!ownsKey && !eligible) return;
+      event.preventDefault(); suppressKeyboardClickUntil = performance.now() + 800;
+      if (!event.repeat && !chargeStarted) beginCharge('keyboard', event.code);
+    });
+    document.addEventListener('keyup', event => { if (chargeSource === 'keyboard' && event.code === chargeKey) { event.preventDefault(); releaseCharge(false, 'keyboard', event.code); } });
+    window.addEventListener('blur', cancelLeverInteraction);
+    $('#records-list').addEventListener('click', event => {
+      const button = event.target.closest?.('[data-record]'); if (!button || !$('#records-list').contains(button) || winnerRecordsMode !== mode) return;
+      const draw = winnerRecords.find(item => item.id === button.dataset.record); if (!draw) return;
+      $('#records-dialog').close(); showResult(draw, true);
+    });
     $('#inline-details').addEventListener('click', () => { if (inlineDraw) showResult(inlineDraw, isRoundScreen || isScreen || (!pages && !state?.isAdmin)); });
     $('#sound-toggle').setAttribute('aria-pressed', String(soundOn)); $('#sound-toggle').setAttribute('aria-label', soundOn ? '关闭音效' : '开启音效'); $('.sound-label').textContent = soundOn ? '音效开' : '音效关';
     $('#sound-toggle').addEventListener('click', () => { soundOn = !soundOn; try { localStorage.setItem('uxuy-sound', soundOn ? 'on' : 'off'); } catch {} unlockAudio(); $('#sound-toggle').setAttribute('aria-pressed', String(soundOn)); $('#sound-toggle').setAttribute('aria-label', soundOn ? '关闭音效' : '开启音效'); $('.sound-label').textContent = soundOn ? '音效开' : '音效关'; tone(523, .13, 'triangle', .04); });
@@ -3718,11 +3815,11 @@ if (typeof window !== 'undefined') {
       finally { renderAdmin(); }
     });
     $('#export-records').addEventListener('click', async () => { const button = $('#export-records'); button.disabled = true; try { const data = await api(`/api/export?mode=${mode}`); const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `UXUY-${mode}-records-${new Date().toISOString().slice(0, 10)}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); } catch (error) { toast(message(error)); } finally { button.disabled = false; } });
-    document.addEventListener('visibilitychange', () => { if (!document.hidden) { refreshLive(); refreshState(); pollDraw(); tickAutoContinue(); } });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) cancelLeverInteraction(); else { if (!chargeStarted) stopLeverMotion(); refreshLive(); refreshState(); pollDraw(); tickAutoContinue(); } });
     window.addEventListener('offline', () => setConnection(false));
     window.addEventListener('online', () => { refreshLive(); pollDraw(); if (autoContinue) autoContinue.retryAt = 0; tickAutoContinue(); });
-    window.addEventListener('pagehide', () => { destroyed = true; });
-    window.addEventListener('pageshow', () => { destroyed = false; tickAutoContinue(); });
+    window.addEventListener('pagehide', () => { destroyed = true; cancelLeverInteraction(); });
+    window.addEventListener('pageshow', () => { destroyed = false; if (!chargeStarted) stopLeverMotion(); tickAutoContinue(); });
   }
   async function loadVerification() {
     if (!verifyId) return;
@@ -3780,15 +3877,14 @@ if (typeof window !== 'undefined') {
             <div class="hash-caption"><span id="hash-caption">正在连接 BNB Chain</span><span id="hash-role">LIVE</span></div>
             <div class="hash-digits" id="main-digits" aria-label="持续变化的实时交易哈希后四位"><span>—</span><span>—</span><span>—</span><span>—</span></div>
             <div class="hash-address"><a id="live-hash-link" aria-disabled="true" target="_blank" rel="noopener">等待链上交易</a><span id="hash-time">WAITING</span></div>
-          </div><p class="display-description">抽奖结束后继续更新</p></section>
+          </div><div class="sequence-space" aria-hidden="true"></div><p class="display-description">抽奖结束后继续更新</p></section>
           <section class="round-hash-screen" aria-label="第二屏：本轮开奖统计"><div class="display-label"><span><b>02</b> 本轮开奖</span><em id="round-phase">等待开始</em></div><div class="hash-panel round-panel">
             <div class="hash-caption"><span id="round-caption">等待数字锁定</span><span id="round-progress">0 / —</span></div>
             <div class="hash-digits round-digits" id="round-digits" aria-label="本轮目标交易哈希后四位"><span>—</span><span>—</span><span>—</span><span>—</span></div>
             <div class="hash-address"><a id="round-hash-link" aria-disabled="true" target="_blank" rel="noopener">数字锁定后开始计数</a><span id="round-block">WAITING</span></div>
-          </div><p class="display-description" id="round-display-description">两屏同步更新，第 X 笔定格</p></section>
+          </div><ol id="round-sequence-trail" class="round-sequence-trail" aria-label="本轮交易计数轨迹"></ol><p class="display-description" id="round-display-description">两屏同步更新，第 X 笔定格</p></section>
         </div>
         <div class="transaction-tape"><span class="tape-label">最近尾号</span><div id="transaction-tape" class="tape-items"><span class="tape-placeholder">等待链上数据</span></div></div>
-        <div class="round-verdict" id="round-verdict" hidden><div class="inline-award-copy"><p id="inline-result-kicker">本轮结果</p><strong id="inline-award">—</strong><span id="inline-bag">—</span></div><div class="inline-result-actions"><p id="inline-auto-continue" class="auto-continue" hidden></p><button type="button" id="inline-details">链上凭证 ↗</button></div></div>
         <div class="slot-zone">
           <div class="slot-title"><span>幸运数字 <i>1–9</i></span><span class="round-label" id="round-number">等待抽奖</span></div>
           <div class="slot-and-lever">
@@ -3802,6 +3898,7 @@ if (typeof window !== 'undefined') {
           <div class="machine-bottom"><div class="draw-status"><span class="status-heading" id="draw-heading">等待抽奖</span><span id="draw-description">锁定数字后，两屏同步更新。</span></div><button type="button" class="draw-button" id="draw-button" disabled><span id="draw-button-text">连接中</span><span aria-hidden="true">↗</span></button></div>
           <p class="keyboard-hint">拉杆、点击按钮或按空格键开始</p><p id="draw-error" class="error-message" role="alert" hidden></p>
         </div>
+        <div class="round-verdict-slot"><div class="result-placeholder"><span>本轮结果</span><strong>等待开奖</strong></div><div class="round-verdict" id="round-verdict" hidden><div class="inline-award-copy"><p id="inline-result-kicker">本轮结果</p><strong id="inline-award">—</strong><span id="inline-bag">—</span></div><div class="inline-result-actions"><p id="inline-auto-continue" class="auto-continue" hidden></p><button type="button" id="inline-details">链上凭证 ↗</button></div></div></div>
       </div>
       <aside class="extra-prize" aria-labelledby="bag-title">
         <div class="extra-top"><span>EXTRA GIFT</span><span class="bonus-mark">＋</span></div><p class="small-eyebrow">附属奖励</p><h2 id="bag-title">UXUY 手提袋</h2>
