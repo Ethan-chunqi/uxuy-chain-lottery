@@ -42,7 +42,7 @@ body::before{background:radial-gradient(ellipse at 42% -35%,#fe42000b,transparen
 .sequence-step.is-final,.sequence-step.is-final>span{color:#fff}.draw-button,.primary-button,.draw-button:hover:not(:disabled),.primary-button:hover{color:#fff}
 .draw-button:disabled{color:#8b96a4}
 .power-console{margin-top:18px}.power-readout{display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:10px;color:#7b8592;font-variant-numeric:tabular-nums}.power-readout .lever-feedback{font-size:10px;line-height:1.5;min-height:0;margin:0;text-align:left;color:#737f8c}.power-readout>strong{font-size:10px;font-weight:500;color:#df3b00;white-space:nowrap}
-.lever-meter{position:relative;width:100%;height:7px;margin:8px 0 0;border:1px solid #e1e6ed;background:#edf0f4;overflow:hidden;border-radius:8px}.lever-meter>span{background:linear-gradient(90deg,#fe4200,#ff9a50);box-shadow:0 0 10px #fe420020}.lever-meter::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent calc(20% - 1px),#fff9 calc(20% - 1px),#fff9 20%)}
+.lever-meter{--meter-track:linear-gradient(90deg,#fff0cf 0%,#ffdbaf 32%,#f8b390 68%,#d78b79 100%);position:relative;width:100%;height:10px;margin:8px 0 0;border:0;background:var(--meter-track);overflow:hidden;border-radius:8px;box-shadow:inset 0 0 0 1px #bb5a2220}.lever-meter>span{width:100%;background:linear-gradient(90deg,#ffe49a 0%,#ffad52 32%,#fe4200 68%,#a51400 100%);clip-path:inset(0 calc((1 - var(--power,0))*100%) 0 0);transition:clip-path .08s linear;box-shadow:none;border-radius:inherit}.lever-meter::after{content:none}
 .number-reel.rolling{box-shadow:0 0 calc(4px + var(--roll-power,0)*17px) #fe420019}.number-reel.rolling>span{filter:blur(calc(.1px + var(--roll-power,0)*.9px));text-shadow:0 -13px 18px #fe420026,0 13px 18px #fe420026}.number-reel[data-power="strong"].rolling{border-color:#fe8358}
 .result-dialog{width:590px;--award-accent:#df3b00;--award-soft:#fe420012;box-shadow:0 30px 100px #19284230}
 .result-body{padding:30px 34px 26px}.result-body h2{font-size:34px;letter-spacing:-.7px;margin-top:10px}.result-subtitle{color:#8c95a0}.result-gift-reveal{position:relative}.result-gift-reveal::before{content:"";position:absolute;left:50%;top:47%;width:310px;height:310px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,var(--award-soft),transparent 68%);pointer-events:none}
@@ -61,7 +61,7 @@ body::before{background:radial-gradient(ellipse at 42% -35%,#fe42000b,transparen
 @keyframes award-title{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @media(min-width:651px){.slot-zone{grid-template-areas:"title title" "controls action" "power power" "hint hint" "error error"}.power-console{grid-area:power;margin-top:17px}.intro h1>img{width:148px}.keyboard-hint{margin-top:9px}.selector-state{color:#647181}}
 @media(max-width:1100px) and (min-width:651px){.intro h1>img{width:130px}}
-@media(max-width:650px){.brand,.brand img{width:98px}.intro h1>img{width:112px}.chain-draw-source{font-size:10px;gap:9px}.chain-draw-source img{width:114px;padding:6px 8px}.power-console{margin-top:15px}.power-readout .lever-feedback,.power-readout>strong{font-size:9px}.lever-meter{height:6px;margin-top:7px}.selector-clock>strong{font-size:21px}.result-body{padding:27px 21px 22px}.result-body h2{font-size:29px}.result-art{width:275px;height:202px;max-width:90%;margin-top:8px}.result-art>img{width:255px;height:197px}.result-art .result-bag{width:74px;height:88px;right:-14px}.result-gift-reveal::before{width:240px;height:240px}.result-confetti{inset:-25px -10px 0}.result-lock-panel{margin-top:12px}.site-footer img{width:73px}.result-number b{font-size:40px}.result-locked-time strong{font-size:21px}}
+@media(max-width:650px){.brand,.brand img{width:98px}.intro h1>img{width:112px}.chain-draw-source{font-size:10px;gap:9px}.chain-draw-source img{width:114px;padding:6px 8px}.power-console{margin-top:15px}.power-readout .lever-feedback,.power-readout>strong{font-size:9px}.lever-meter{height:9px;margin-top:7px}.selector-clock>strong{font-size:21px}.result-body{padding:27px 21px 22px}.result-body h2{font-size:29px}.result-art{width:275px;height:202px;max-width:90%;margin-top:8px}.result-art>img{width:255px;height:197px}.result-art .result-bag{width:74px;height:88px;right:-14px}.result-gift-reveal::before{width:240px;height:240px}.result-confetti{inset:-25px -10px 0}.result-lock-panel{margin-top:12px}.site-footer img{width:73px}.result-number b{font-size:40px}.result-locked-time strong{font-size:21px}}
 @media(prefers-reduced-motion:reduce){.result-details-reveal{transition:none}.result-dialog[data-reveal-stage="gift"] .result-details-reveal{opacity:1;transform:none}.number-reel.rolling>span{filter:none;text-shadow:none}}
 
 .result-image-fallback{display:grid;place-items:center;min-height:180px;padding:26px;font-size:25px;font-weight:600;color:var(--award-accent);line-height:1.5}
@@ -287,7 +287,7 @@ html[data-theme="dark"] .number-window.number-locked .number-reel { border-color
 html[data-theme="dark"] .number-reel.rolling { box-shadow: 0 0 calc(4px + var(--roll-power, 0) * 17px) #fe420022; }
 html[data-theme="dark"] .bag-reel { background: #313641; border-color: #535966; }
 html[data-theme="dark"] .reel-strip .reel-symbol { color: #c9d2df; }
-html[data-theme="dark"] .lever-meter { background: #354052; }
+html[data-theme="dark"] .lever-meter { --meter-track: linear-gradient(90deg,#4d432f 0%,#685037 32%,#77412e 68%,#743026 100%); background: var(--meter-track); box-shadow: inset 0 0 0 1px #ffa15c18; }
 html[data-theme="dark"] .power-readout { color: var(--muted); }
 html[data-theme="dark"] .power-readout .lever-feedback { color: #b3bfce; }
 html[data-theme="dark"] .power-readout > strong { color: var(--dark-accent-text); }
@@ -453,6 +453,232 @@ html[data-theme="dark"] dialog[open]::backdrop { background: #03060bbd; }
   html[data-theme="dark"] dialog[open]::backdrop { background: #03060b00; }
 }
 
+/* The permanent draw journal shares the page's light / dark palette. */
+.screen-view .recent-rounds-panel,.round-screen-view .recent-rounds-panel{display:none}
+.recent-rounds-panel {
+  --recent-row-height: 44px;
+  --recent-ink: #25303d;
+  --recent-muted: #7c8796;
+  --recent-line: #e7ebf0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid #e2e6ec;
+  border-radius: 22px;
+  background: #fff;
+  color: var(--recent-ink);
+  box-shadow: 0 8px 32px #263d5705;
+}
+.recent-rounds-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 7px 9px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.recent-rounds-head .eyebrow {
+  grid-column: 1 / -1;
+  color: var(--recent-muted);
+  font-size: 8px;
+  letter-spacing: 1.5px;
+}
+.recent-rounds-head h2 {
+  min-width: 0;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -.3px;
+}
+.recent-rounds-live {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  color: var(--recent-muted);
+  font-size: 9px;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.recent-rounds-live::before {
+  content: "";
+  flex-shrink: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fe4200;
+}
+.recent-rounds-list {
+  display: grid;
+  grid-template-rows: repeat(10, minmax(0, 1fr));
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.recent-round-item,
+.recent-round-placeholder {
+  min-width: 0;
+  min-height: var(--recent-row-height);
+  border-top: 1px solid var(--recent-line);
+}
+.recent-round-item {
+  --recent-award: #354255;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 6px 0;
+  line-height: 1.3;
+}
+.recent-round-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-width: 0;
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.recent-round-index {
+  max-width: 100%;
+  overflow: hidden;
+  color: #667488;
+  font: 500 10px/1.2 var(--mono);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.recent-round-meta time {
+  color: var(--recent-muted);
+  font: 400 8px/1.2 var(--mono);
+  white-space: nowrap;
+}
+.recent-round-outcome {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: center;
+  min-width: 0;
+  gap: 9px;
+}
+.recent-round-hash {
+  display: block;
+  padding: 5px 2px;
+  border-radius: 5px;
+  color: #ca3e0e;
+  background: #fff0e8;
+  font: 500 11px/1.1 var(--mono);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  letter-spacing: .35px;
+  white-space: nowrap;
+}
+.recent-round-gift { min-width: 0; }
+.recent-round-gift > strong {
+  display: block;
+  overflow: hidden;
+  color: var(--recent-award);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.recent-round-bonus {
+  display: block;
+  overflow: hidden;
+  margin-top: 3px;
+  color: var(--recent-muted);
+  font-size: 8px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.recent-round-bonus.has-bag { color: #df3b00; font-weight: 500; }
+.recent-round-item[data-award="suit"] { --recent-award: #9d6910; }
+.recent-round-item[data-award="hoodie"] { --recent-award: #7856a8; }
+.recent-round-item[data-award="bull"] { --recent-award: #3974ad; }
+.recent-round-item[data-award="tshirt"] { --recent-award: #3d8057; }
+.recent-round-item[data-award="empty"] { --recent-award: #727d8a; }
+.recent-round-item[data-award="empty"] .recent-round-hash { color: #687688; background: #f0f3f7; }
+.recent-round-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-style: dashed;
+  color: #9ba4b1;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+html[data-theme="dark"] .recent-rounds-panel {
+  --recent-ink: #eff3f9;
+  --recent-muted: #a2adbe;
+  --recent-line: #333e50;
+  background: #1a202b;
+  border-color: #333d4e;
+  box-shadow: 0 8px 32px #00000018;
+}
+html[data-theme="dark"] .recent-round-index { color: #c0cbdb; }
+html[data-theme="dark"] .recent-round-hash { color: #ffad89; background: #442b22; }
+html[data-theme="dark"] .recent-round-item[data-award="suit"] { --recent-award: #e8bf6d; }
+html[data-theme="dark"] .recent-round-item[data-award="hoodie"] { --recent-award: #c2a3f3; }
+html[data-theme="dark"] .recent-round-item[data-award="bull"] { --recent-award: #8bb8f2; }
+html[data-theme="dark"] .recent-round-item[data-award="tshirt"] { --recent-award: #94cfac; }
+html[data-theme="dark"] .recent-round-item[data-award="empty"] { --recent-award: #b0bbcb; }
+html[data-theme="dark"] .recent-round-item[data-award="empty"] .recent-round-hash { color: #b5c2d4; background: #293343; }
+html[data-theme="dark"] .recent-round-bonus.has-bag { color: #ff9b77; }
+html[data-theme="dark"] .recent-round-placeholder { color: #8b98ac; }
+
+/* Normal browsers scroll the three sections in reading order on small screens. */
+html:not([data-display="tv"]) body:not(.screen-view):not(.round-screen-view) .event-stage {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "machine" "bag" "records";
+  grid-template-rows: auto;
+}
+html:not([data-display="tv"]) body:not(.screen-view):not(.round-screen-view) .event-stage > .machine { grid-area: machine; }
+html:not([data-display="tv"]) body:not(.screen-view):not(.round-screen-view) .event-stage > .extra-prize { grid-area: bag; }
+html:not([data-display="tv"]) body:not(.screen-view):not(.round-screen-view) .event-stage > .recent-rounds-panel { grid-area: records; }
+
+@media (min-width: 1100px) {
+  html:not([data-display="tv"]) body:not(.screen-view):not(.round-screen-view) .event-stage {
+    grid-template-columns: minmax(0, 1fr) minmax(250px, 280px);
+    grid-template-areas: "machine bag" "machine records";
+    grid-template-rows: auto 1fr;
+    align-items: stretch;
+  }
+  html:not([data-display="tv"]) body:not(.screen-view):not(.round-screen-view) .event-stage > .extra-prize {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 82px;
+    grid-template-areas: "label art" "caption art" "title art" "name art" "desc desc" "foot foot";
+    gap: 4px 12px;
+    align-content: start;
+    padding: 18px;
+  }
+  html:not([data-display="tv"]) body:not(.screen-view):not(.round-screen-view) .extra-prize .extra-top { grid-area: label; }
+  html:not([data-display="tv"]) body:not(.screen-view):not(.round-screen-view) .extra-prize .small-eyebrow { grid-area: caption; margin-top: 5px; font-size: 8px; }
+  html:not([data-display="tv"]) body:not(.screen-view):not(.round-screen-view) .extra-prize h2 { grid-area: title; margin-top: 0; font-size: 18px; }
+  html:not([data-display="tv"]) body:not(.screen-view):not(.round-screen-view) .extra-prize .bag-art { grid-area: art; height: 110px; min-height: 110px; max-height: 110px; margin: 0; border-radius: 10px; }
+  html:not([data-display="tv"]) body:not(.screen-view):not(.round-screen-view) .extra-prize .bag-art img { width: 78px; height: 94px; }
+  html:not([data-display="tv"]) body:not(.screen-view):not(.round-screen-view) .extra-prize .bag-name { grid-area: name; margin-top: 0; padding-bottom: 0; border: 0; font-size: 11px; }
+  html:not([data-display="tv"]) body:not(.screen-view):not(.round-screen-view) .extra-prize .bag-explanation { grid-area: desc; margin-top: 7px; font-size: 10px; line-height: 1.7; }
+  html:not([data-display="tv"]) body:not(.screen-view):not(.round-screen-view) .extra-prize .extra-footnote { grid-area: foot; margin-top: 0; font-size: 9px; line-height: 1.6; }
+}
+@media (max-width: 650px) {
+  .recent-rounds-panel { padding: 17px 14px; border-radius: 16px; }
+  .recent-rounds-head h2 { font-size: 20px; }
+  .recent-round-item { grid-template-columns: 48px minmax(0, 1fr); gap: 12px; }
+  .recent-round-outcome { grid-template-columns: 48px minmax(0, 1fr); gap: 12px; }
+  .recent-round-index { font-size: 11px; }
+  .recent-round-meta time { font-size: 9px; }
+  .recent-round-hash { font-size: 13px; }
+  .recent-round-gift > strong { font-size: 12px; }
+  .recent-round-bonus { font-size: 9px; }
+}
+
 /* The event TV view uses the same controls, chain sequence and result dialog. */
 html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) {
   --tv-u: min(1vw, 1.777778dvh);
@@ -600,9 +826,9 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
     margin: 0;
     padding: calc(var(--tv-u) * .85) calc(var(--tv-u) * 1.3);
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, .3fr);
+    grid-template-columns: minmax(0, 60fr) minmax(0, 17fr) minmax(0, 23fr);
     grid-template-rows: calc(var(--tv-u) * 3.3) calc(var(--tv-u) * 16.8) minmax(0, 1fr);
-    grid-template-areas: "intro intro" "machine bag" "machine prizes";
+    grid-template-areas: "intro intro intro" "machine bag records" "machine prizes records";
     gap: calc(var(--tv-u) * .85);
     align-items: stretch;
   }
@@ -674,11 +900,12 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .machine {
     grid-area: machine;
+    container-type: inline-size;
     display: grid;
     grid-template-rows: auto minmax(0, 1fr) auto auto;
     gap: calc(var(--tv-u) * .7);
     min-height: 0;
-    padding: calc(var(--tv-u) * 1.05);
+    padding: calc(var(--tv-u) * .9);
     border-radius: calc(var(--tv-u) * 1.1);
     background: var(--tv-panel);
     border-color: var(--tv-line);
@@ -702,24 +929,24 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .hash-screens {
     min-height: 0;
-    gap: calc(var(--tv-u) * 1.2);
+    gap: calc(var(--tv-u) * .7);
     align-content: center;
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .display-label {
-    font-size: calc(var(--tv-u) * 1.15);
+    font-size: calc(var(--tv-u) * 1.02);
     margin-bottom: calc(var(--tv-u) * .5);
     color: var(--tv-ink);
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .display-label b,
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .display-label em {
-    font-size: calc(var(--tv-u) * .8);
+    font-size: calc(var(--tv-u) * .68);
     color: var(--tv-muted);
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .hash-panel {
-    padding: calc(var(--tv-u) * .75);
+    padding: calc(var(--tv-u) * .6);
     border-radius: calc(var(--tv-u) * .7);
     background: var(--tv-soft);
     border-color: var(--tv-line);
@@ -727,22 +954,22 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .hash-caption {
     min-height: var(--tv-u);
-    font-size: calc(var(--tv-u) * .85);
+    font-size: calc(var(--tv-u) * .74);
     color: var(--tv-muted);
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .hash-caption > span + span {
-    font-size: calc(var(--tv-u) * .75);
+    font-size: calc(var(--tv-u) * .65);
     color: var(--tv-muted);
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .hash-digits {
-    gap: calc(var(--tv-u) * .4);
+    gap: calc(var(--tv-u) * .3);
     margin-top: calc(var(--tv-u) * .5);
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .hash-digits > span {
-    font-size: calc(var(--tv-u) * 7);
+    font-size: clamp(48px, 10cqw, 116px);
     line-height: 1.08;
     letter-spacing: -.04em;
     border-radius: calc(var(--tv-u) * .45);
@@ -835,9 +1062,9 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .slot-zone {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) calc(var(--tv-u) * 12.6);
+    grid-template-columns: minmax(0, 1fr) calc(var(--tv-u) * 10.8);
     grid-template-areas: "title title" "controls action" "power power";
-    column-gap: calc(var(--tv-u) * 1.2);
+    column-gap: calc(var(--tv-u) * .8);
     padding-top: calc(var(--tv-u) * .8);
     border-color: var(--tv-line);
     color: var(--tv-ink);
@@ -863,21 +1090,21 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .selector-layout {
-    gap: calc(var(--tv-u) * 1.2);
+    gap: calc(var(--tv-u) * .75);
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .number-window {
-    width: calc(var(--tv-u) * 7.1);
+    width: calc(var(--tv-u) * 6.1);
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .number-reel {
-    height: calc(var(--tv-u) * 7.7);
+    height: calc(var(--tv-u) * 7.3);
     border-radius: calc(var(--tv-u) * .7);
     background: var(--tv-orange-soft);
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .number-reel > span {
-    font-size: calc(var(--tv-u) * 6.6);
+    font-size: calc(var(--tv-u) * 6.2);
     color: var(--tv-orange-ink);
   }
 
@@ -899,7 +1126,7 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .selector-clock > strong {
-    font-size: calc(var(--tv-u) * 2.25);
+    font-size: clamp(23px, 3.6cqw, 42px);
     color: var(--tv-ink);
     line-height: 1.3;
     letter-spacing: -.01em;
@@ -972,9 +1199,9 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
     min-height: 44px;
     min-width: 0;
     gap: calc(var(--tv-u) * .5);
-    padding: calc(var(--tv-u) * .7);
+    padding: calc(var(--tv-u) * .45);
     border-radius: calc(var(--tv-u) * .65);
-    font-size: calc(var(--tv-u) * 1.08);
+    font-size: calc(var(--tv-u) * .96);
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .draw-button > span:first-child {
@@ -1015,9 +1242,9 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .lever-meter {
-    height: calc(var(--tv-u) * .35);
+    height: clamp(10px, calc(var(--tv-u) * .65), 18px);
     margin-top: calc(var(--tv-u) * .25);
-    background: var(--tv-soft);
+    background: var(--meter-track);
     border-color: var(--tv-line);
   }
 
@@ -1081,7 +1308,7 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .inline-result-actions {
     flex-direction: row;
     align-items: center;
-    gap: calc(var(--tv-u) * .8);
+    gap: calc(var(--tv-u) * .45);
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .inline-result-actions button {
@@ -1105,8 +1332,8 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .inline-result-actions [data-countdown-copy] {
-    max-width: calc(var(--tv-u) * 8);
-    font-size: calc(var(--tv-u) * .9);
+    max-width: calc(var(--tv-u) * 6.8);
+    font-size: calc(var(--tv-u) * .82);
     white-space: normal;
     text-align: left;
   }
@@ -1119,7 +1346,7 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
     grid-template-rows: auto auto auto minmax(0, 1fr);
     grid-template-areas: "tag tag" "title art" "name art" "copy art";
     gap: calc(var(--tv-u) * .35) calc(var(--tv-u) * .6);
-    padding: calc(var(--tv-u) * .95);
+    padding: calc(var(--tv-u) * .75);
     background: var(--tv-panel);
     border-color: var(--tv-line);
     border-radius: calc(var(--tv-u) * 1.1);
@@ -1147,7 +1374,7 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .extra-prize h2 {
     grid-area: title;
     margin: 0;
-    font-size: calc(var(--tv-u) * 1.65);
+    font-size: calc(var(--tv-u) * 1.25);
     line-height: 1.2;
     letter-spacing: -.03em;
     color: var(--tv-ink);
@@ -1180,14 +1407,14 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
     padding: 0;
     border: 0;
     color: var(--tv-orange-ink);
-    font-size: calc(var(--tv-u) * .95);
+    font-size: calc(var(--tv-u) * .85);
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .bag-explanation {
     grid-area: copy;
     align-self: start;
     margin: 0;
-    font-size: calc(var(--tv-u) * .85);
+    font-size: calc(var(--tv-u) * .75);
     line-height: 1.4;
     color: var(--tv-muted);
   }
@@ -1198,7 +1425,7 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
     display: grid;
     grid-template-rows: auto minmax(0, 1fr);
     gap: calc(var(--tv-u) * .55);
-    padding: calc(var(--tv-u) * .85);
+    padding: calc(var(--tv-u) * .65);
     background: var(--tv-panel);
     border: 1px solid var(--tv-line);
     border-radius: calc(var(--tv-u) * 1.1);
@@ -1216,17 +1443,13 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .section-heading h2 {
     margin: 0;
-    font-size: calc(var(--tv-u) * 1.35);
+    font-size: calc(var(--tv-u) * 1.2);
     line-height: 1.3;
     color: var(--tv-ink);
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .section-heading > p {
-    max-width: 45%;
-    color: var(--tv-muted);
-    font-size: calc(var(--tv-u) * .72);
-    text-align: right;
-    line-height: 1.3;
+    display: none;
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .prize-list {
@@ -1240,10 +1463,10 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
     min-height: 0;
     display: grid;
     grid-template-areas: "art title";
-    grid-template-columns: calc(var(--tv-u) * 4.1) minmax(0, 1fr);
+    grid-template-columns: calc(var(--tv-u) * 3.5) minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr);
-    gap: calc(var(--tv-u) * .55);
-    padding: calc(var(--tv-u) * .35) calc(var(--tv-u) * .5);
+    gap: calc(var(--tv-u) * .4);
+    padding: calc(var(--tv-u) * .35) calc(var(--tv-u) * .4);
     border-radius: calc(var(--tv-u) * .55);
     background: color-mix(in srgb, var(--rarity, #8a95a3) 6%, var(--tv-panel));
     border-color: color-mix(in srgb, var(--rarity, #8a95a3) 20%, var(--tv-line));
@@ -1294,7 +1517,7 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .prize-title h3 {
     margin-top: calc(var(--tv-u) * .2);
-    font-size: calc(var(--tv-u) * 1.25);
+    font-size: calc(var(--tv-u) * 1.02);
     color: var(--tv-ink);
     line-height: 1.15;
     letter-spacing: -.015em;
@@ -1320,6 +1543,217 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .empty-award-art .empty-spark {
     display: none;
+  }
+
+  /* The latest ten rounds, including empty slots, stay beside the live draw. */
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-rounds-panel {
+    --recent-row-height: 0px;
+    grid-area: records;
+    min-width: 0;
+    min-height: 0;
+    align-self: stretch;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: calc(var(--tv-u) * .55);
+    margin: 0;
+    padding: calc(var(--tv-u) * .8);
+    border: 1px solid var(--tv-line);
+    border-radius: calc(var(--tv-u) * 1.1);
+    background: var(--tv-panel);
+    color: var(--tv-ink);
+    box-shadow: none;
+    overflow: hidden;
+  }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-rounds-head {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    gap: calc(var(--tv-u) * .2) calc(var(--tv-u) * .4);
+    align-items: center;
+    margin: 0;
+    padding: 0 0 calc(var(--tv-u) * .3);
+  }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-rounds-head > div {
+    grid-area: 1 / 1 / 3 / 2;
+    min-width: 0;
+  }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-rounds-head .eyebrow {
+    grid-area: 1 / 1;
+    margin: 0;
+    color: var(--tv-muted);
+    font-size: calc(var(--tv-u) * .62);
+    line-height: 1.25;
+    letter-spacing: .1em;
+  }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-rounds-head h2 {
+    grid-area: 2 / 1;
+    margin: calc(var(--tv-u) * .15) 0 0;
+    color: var(--tv-ink);
+    font-size: calc(var(--tv-u) * 1.35);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -.02em;
+  }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-rounds-live {
+    grid-area: 1 / 2 / 3 / 3;
+    max-width: calc(var(--tv-u) * 5.2);
+    color: var(--tv-orange-ink);
+    font-size: calc(var(--tv-u) * .65);
+    line-height: 1.3;
+    text-align: right;
+    white-space: normal;
+  }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-rounds-list {
+    min-width: 0;
+    min-height: 0;
+    max-height: none;
+    height: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(10, minmax(0, 1fr));
+    grid-auto-rows: minmax(0, 1fr);
+    gap: calc(var(--tv-u) * .25);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    list-style: none;
+  }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-round-item {
+    --recent-accent: var(--tv-muted);
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    align-content: center;
+    align-items: center;
+    gap: calc(var(--tv-u) * .12);
+    margin: 0;
+    padding: calc(var(--tv-u) * .2) calc(var(--tv-u) * .45);
+    border: 1px solid var(--tv-line);
+    border-left: 2px solid var(--recent-accent);
+    border-radius: calc(var(--tv-u) * .4);
+    background: var(--tv-soft);
+    color: var(--tv-ink);
+    box-shadow: none;
+    overflow: hidden;
+  }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-round-meta {
+    min-width: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(var(--tv-u) * .5);
+    color: var(--tv-muted);
+    font-size: calc(var(--tv-u) * .68);
+    line-height: 1.15;
+  }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-round-index {
+    font-size: calc(var(--tv-u) * .72);
+    line-height: 1.15;
+    font-weight: 500;
+    color: var(--tv-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-round-meta time {
+    margin: 0;
+    color: var(--tv-muted);
+    font-size: calc(var(--tv-u) * .68);
+    line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-round-outcome {
+    min-width: 0;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: calc(var(--tv-u) * 4.45) minmax(0, 1fr);
+    gap: calc(var(--tv-u) * .5);
+    align-items: center;
+  }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-round-hash {
+    display: block;
+    padding: 0;
+    margin: 0;
+    background: none;
+    font-family: var(--mono);
+    font-size: calc(var(--tv-u) * 1.5);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: .025em;
+    font-variant-numeric: tabular-nums;
+    color: var(--tv-ink);
+  }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-round-gift {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: calc(var(--tv-u) * .08);
+  }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-round-gift > strong {
+    display: block;
+    min-width: 0;
+    color: var(--tv-ink);
+    font-size: calc(var(--tv-u) * .9);
+    font-weight: 500;
+    line-height: 1.15;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-round-bonus {
+    display: block;
+    min-width: 0;
+    margin-top: 0;
+    min-height: 1.15em;
+    color: var(--tv-muted);
+    font-size: calc(var(--tv-u) * .7);
+    line-height: 1.15;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-round-item[data-award="suit"] { --recent-accent: #ba8a2b; }
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-round-bonus.has-bag { color: var(--tv-orange-ink); font-weight: 500; }
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-round-item[data-award="hoodie"] { --recent-accent: #9c7bc9; }
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-round-item[data-award="bull"] { --recent-accent: #6e9bd1; }
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-round-item[data-award="tshirt"] { --recent-accent: #6ea781; }
+
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recent-round-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    height: 100%;
+    margin: 0;
+    padding: calc(var(--tv-u) * .2) calc(var(--tv-u) * .45);
+    border: 1px dashed var(--tv-line);
+    border-radius: calc(var(--tv-u) * .4);
+    background: var(--tv-soft);
+    color: var(--tv-muted);
+    font-size: calc(var(--tv-u) * .75);
+    line-height: 1.2;
   }
 
   /* A wide, readable result keeps the existing gift-to-details reveal gate. */
@@ -3968,7 +4402,7 @@ window.UXUY_INLINE_ASSETS={"bag-light.svg":"data:image/svg+xml;base64,PHN2ZyB4bW
     '1–9 转动中，锁定你的数字': 'Rolling 1–9 to lock your number', '按锁定时间逐笔计数，最终确认后揭晓哈希。': 'Count transactions after the lock time; reveal the hash after finality.',
     '网络暂不可用，本轮已保留，恢复后继续。': 'The network is unavailable. This round is saved and will resume.', '正在读取活动': 'Loading event', '正在连接活动服务。': 'Connecting to the event service.',
     '现场工作人员操作': 'Staff operation', '请由现场工作人员开启抽奖': 'Please ask event staff to start the draw', '此页面可查看实时哈希与活动规则。': 'View live hashes and draw rules here.',
-    '等待下一轮': 'Next round', '结果已保存': 'Result saved', '正在同步结果。': 'Saving the result.', '倒计时结束后，可再次拉杆抽奖。': 'Pull again when the countdown ends.',
+    '等待下一轮': 'Waiting for the next round', '结果已保存': 'Result saved', '正在同步结果。': 'Saving the result.', '倒计时结束后，可再次拉杆抽奖。': 'Pull again when the countdown ends.',
     '奖品已发完': 'All prizes awarded', '本场活动已结束': 'Event ended', '全部主奖已发出。': 'All main prizes have been awarded.', '正式活动尚未开启': 'Live event not started',
     '奖品就位，等待开场': 'Ready for the event to begin', '请在管理中开启正式活动。': 'Start the live event from Admin.', '等待链上连接': 'Waiting for chain connection', '等待网络恢复': 'Waiting for network',
     '连接成功后，即可拉杆锁定数字与时间。': 'Once connected, pull the lever to lock a number and time.', '下一轮': 'Next round', '未加赠': 'No bonus', '主奖中奖后，揭晓手提袋': 'After a main-prize win, reveal the tote bonus',
@@ -4009,6 +4443,7 @@ window.UXUY_INLINE_ASSETS={"bag-light.svg":"data:image/svg+xml;base64,PHN2ZyB4bW
     '公开预览不提供库存或管理导出': 'Administrative exports are not available in the public preview', '当前浏览器没有本轮记录': 'This browser has no record of this draw', '请等待开奖完成': 'Please wait for the draw to complete',
     '公开预览不开放管理操作': 'Administrative actions are disabled in the public preview', '静态预览接口不存在': 'Preview endpoint not found',
     '本机存储或链上连接暂不可用；原抽奖记录保留，请重试。': 'Local storage or the chain connection is unavailable. The original draw is saved; retry shortly.',
+    '最近10轮': 'Last 10 rounds', '最近10轮开奖记录': 'Last 10 draw results', '实时更新': 'Live updates', '无加赠': 'No bonus', '＋ UXUY 手提袋': '+ UXUY Tote Bag',
     '中奖后加赠': 'Bonus after a main-prize win', '独立判定': 'Independently determined', '04 · UXUY 手提袋': '04 · UXUY Tote Bag', '正式': 'Live', '预览': 'Preview',
     '已保留本轮编号，系统将继续查询。': 'This draw ID is saved. Checking will continue.',
     '另获 UXUY 手提袋加赠 ·': 'Bonus UXUY Tote Bag ·', '查看本轮规则快照': 'View the locked rules',
@@ -4055,6 +4490,7 @@ window.UXUY_INLINE_ASSETS={"bag-light.svg":"data:image/svg+xml;base64,PHN2ZyB4bW
     '本机浏览器': 'Server', '浏览器': 'Browser', '本机浏览器': 'This browser', '本机预览': 'Local preview', '手绘展示': ' illustration', '手提袋': 'Tote Bag',
   }));
   const patterns = [
+    [/^最近\s*(\d+)\s*轮$/, (_, n) => `Last ${n} rounds`],
     [/^先锁定数字与(本机浏览器|浏览器|本机浏览器)时间，再等未来交易。$/, (_, owner) => `First lock the number and ${owner === '本机浏览器' ? 'server' : 'browser'} time, then wait for future transactions.`],
     [/^取此时间后的第 (\d+|X|—) 笔交易[。.]?$/, (_, n) => `Select transaction ${n} after this time`],
     [/^同步计数 · 第 (\d+) 笔$/, (_, n) => `Synchronized · Transaction ${n}`],
@@ -4736,6 +5172,7 @@ if (typeof window !== 'undefined') {
     const roundScreenURL = new URL('/round-screen', location.origin); roundScreenURL.searchParams.set('mode', mode); $('.round-screen-link').href = pages ? pages.viewLink('round-screen', mode) : roundScreenURL.href;
     renderPrizeList();
     renderRecords();
+    renderRecentRounds();
     if (winnerRecordsMode !== mode || winnerRecordsMainWins !== Number(state.mainWins || 0)) refreshWinners();
     renderAdmin();
     renderLastDraw(state.lastDraw);
@@ -5050,6 +5487,26 @@ if (typeof window !== 'undefined') {
     updateAutoContinueText();
     $('#round-caption').textContent = bagPending && prize ? '主奖已定格 · 加赠待揭晓' : '本轮已定格 · 奖励已统计';
     $$('.prize-row').forEach(el => el.classList.toggle('is-hit', el.dataset.prize === draw.awardKey));
+    renderRecentRounds();
+  }
+  function renderRecentRounds() {
+    const list = $('#recent-rounds-list');
+    if (!list) return;
+    const records = new Map();
+    for (const draw of [...(state?.history || []), state?.lastDraw, inlineDraw]) {
+      if (!draw?.id || draw.status !== 'completed' || (draw.mode && draw.mode !== mode)) continue;
+      const revealed = fullyPlayedDrawId === draw.id || presentedDraws.has(draw.id) || (inlineDraw?.id === draw.id && roundDraw?.id === draw.id && $('.round-panel').classList.contains('round-stopped'));
+      // A backend-completed round must remain hidden until its X-th hash has stopped on screen.
+      if (!draw.acknowledgedAt && !revealed) continue;
+      records.set(draw.id, draw);
+    }
+    const recent = [...records.values()].sort((a, b) => Number(b.sequence || 0) - Number(a.sequence || 0) || Date.parse(b.completedAt) - Date.parse(a.completedAt)).slice(0, 10);
+    const rows = recent.map((draw, index) => {
+      const prize = PRIZES[draw.awardKey]; const locked = lockTime(draw);
+      return `<li class="recent-round-item${index === 0 ? ' is-latest' : ''}" data-award="${escapeHTML(draw.awardKey)}" data-round-id="${escapeHTML(draw.id)}"><div class="recent-round-meta"><strong class="recent-round-index">#${String(draw.sequence || '—').padStart(3, '0')}</strong><time title="${escapeHTML(locked.full)} UTC+08:00">${escapeHTML(locked.time)}</time></div><div class="recent-round-outcome"><code class="recent-round-hash">${escapeHTML(suffixOf(draw))}</code><div class="recent-round-gift"><strong>${escapeHTML(prize?.name || '本轮未中奖')}</strong><span class="recent-round-bonus${draw.bag && prize ? ' has-bag' : ''}">${prize ? draw.bag ? '＋ UXUY 手提袋' : '无加赠' : '—'}</span></div></div></li>`;
+    });
+    for (let index = recent.length; index < 10; index++) rows.push('<li class="recent-round-placeholder"><span>—</span><span>等待下一轮</span></li>');
+    renderHTML(list, rows.join(''));
   }
   function paintLockedClock(draw) {
     const t = lockTime(draw);
@@ -5711,7 +6168,7 @@ if (typeof window !== 'undefined') {
     document.body.classList.toggle('screen-view', isScreen);
     document.body.classList.toggle('round-screen-view', isRoundScreen);
     document.title = isScreen ? 'UXUY · 实时哈希大屏' : isRoundScreen ? 'UXUY · 本轮开奖大屏' : verifyId ? 'UXUY · 开奖结果查验' : 'UXUY 幸运大抽奖';
-    installEvents(); renderPrizeList(); updateControls();
+    installEvents(); renderPrizeList(); renderRecentRounds(); updateControls();
     updateIdleClock();
     await Promise.allSettled([refreshState(true), refreshLive()]);
     loadVerification();
@@ -5785,6 +6242,7 @@ if (typeof window !== 'undefined') {
         <div class="bag-art"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgMTMwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9InBhcGVyIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI0ZGRkNGMCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0ZGRjREOSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxwYXRoIGQ9Ik0yNSAzN2g3MGw5IDgySDE2eiIgZmlsbD0idXJsKCNwYXBlcikiIHN0cm9rZT0iI0Q3QUQ2OSIgc3Ryb2tlLXdpZHRoPSIzLjUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNODcgMzhsNyA4MGgxMGwtOS04MXoiIGZpbGw9IiNFOUNGQTAiIGZpbGwtb3BhY2l0eT0iLjUiLz48cGF0aCBkPSJNNDMgNDJWMjdhMTcgMTcgMCAwIDEgMzQgMHYxNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRDdBRDY5IiBzdHJva2Utd2lkdGg9IjQuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTI0IDEwOGg2NCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjREFCRDg0IiBzdHJva2Utb3BhY2l0eT0iLjQ1IiBzdHJva2Utd2lkdGg9IjEuNSIvPjxzdmcgeD0iMjIiIHk9IjUxIiB3aWR0aD0iNzYiIGhlaWdodD0iNDIiIHZpZXdCb3g9IjAgMCA2NTUgMjY0IiBmaWxsPSJub25lIj4KPHBhdGggZD0iTTg4LjAzOTUgMTgxQzc4IDE4MSA2OS44MTgyIDE3OS40MDIgNjMuNDk0MSAxNzYuMjA1QzU3LjE3IDE3My4wMDggNTIuMjI5MiAxNjguOTU3IDQ4LjY3MTkgMTY0LjA1QzQ1LjE5MzcgMTU5LjE0NCA0Mi43MDM2IDE1NC4wNTIgNDEuMjAxNiAxNDguNzczQzM5LjY5OTYgMTQzLjQyMSAzOC43OTA1IDEzOC41NTIgMzguNDc0MyAxMzQuMTY1QzM4LjE1ODEgMTI5Ljc3OSAzOCAxMjYuNTgzIDM4IDEyNC41NzZWNTdINzAuNzI3M1YxMTMuODcxQzcwLjcyNzMgMTE2LjYyMSA3MC44ODU0IDEyMC4xNTIgNzEuMjAxNiAxMjQuNDY0QzcxLjUxNzggMTI4LjcwMSA3Mi41MDU5IDEzMi45NzYgNzQuMTY2IDEzNy4yODhDNzUuODI2MSAxNDEuNiA3OC41MTM4IDE0NS4yMDUgODIuMjI5MiAxNDguMTA0Qzg2LjAyMzcgMTUxLjAwNCA5MS4zNTk3IDE1Mi40NTMgOTguMjM3MiAxNTIuNDUzQzEwMS4wMDQgMTUyLjQ1MyAxMDMuOTY4IDE1Mi4wNDQgMTA3LjEzIDE1MS4yMjdDMTEwLjI5MiAxNTAuNDA5IDExMy4yNTcgMTQ4Ljg0OCAxMTYuMDI0IDE0Ni41NDNDMTE4Ljc5MSAxNDQuMTY0IDEyMS4wNDMgMTQwLjcwNyAxMjIuNzgzIDEzNi4xNzNDMTI0LjYwMSAxMzEuNTY0IDEyNS41MSAxMjUuNTQyIDEyNS41MSAxMTguMTA4TDE0NC4wMDggMTI2LjM2QzE0NC4wMDggMTM1Ljg3NSAxNDEuOTUzIDE0NC43OTYgMTM3Ljg0MiAxNTMuMTIyQzEzMy43MzEgMTYxLjQ0OCAxMjcuNTI2IDE2OC4xNzYgMTE5LjIyNSAxNzMuMzA2QzExMS4wMDQgMTc4LjQzNSAxMDAuNjA5IDE4MSA4OC4wMzk1IDE4MVoiIGZpbGw9ImJsYWNrIi8+CjxwYXRoIGQ9Ik0xMjkuNTQxIDE4MFYxMzcuNTExSDEyNS41MVY1N0gxNThWMTgwSDEyOS41NDFaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNMzkyLjA0IDE4MUMzODIgMTgxIDM3My44MTggMTc5LjQwMiAzNjcuNDk0IDE3Ni4yMDVDMzYxLjE3IDE3My4wMDggMzU2LjIyOSAxNjguOTU3IDM1Mi42NzIgMTY0LjA1QzM0OS4xOTQgMTU5LjE0NCAzNDYuNzA0IDE1NC4wNTIgMzQ1LjIwMiAxNDguNzczQzM0My43IDE0My40MjEgMzQyLjc5MSAxMzguNTUyIDM0Mi40NzQgMTM0LjE2NUMzNDIuMTU4IDEyOS43NzkgMzQyIDEyNi41ODMgMzQyIDEyNC41NzZWNTdIMzc0LjcyN1YxMTMuODcxQzM3NC43MjcgMTE2LjYyMSAzNzQuODg1IDEyMC4xNTIgMzc1LjIwMiAxMjQuNDY0QzM3NS41MTggMTI4LjcwMSAzNzYuNTA2IDEzMi45NzYgMzc4LjE2NiAxMzcuMjg4QzM3OS44MjYgMTQxLjYgMzgyLjUxNCAxNDUuMjA1IDM4Ni4yMjkgMTQ4LjEwNEMzOTAuMDI0IDE1MS4wMDQgMzk1LjM2IDE1Mi40NTMgNDAyLjIzNyAxNTIuNDUzQzQwNS4wMDQgMTUyLjQ1MyA0MDcuOTY4IDE1Mi4wNDQgNDExLjEzIDE1MS4yMjdDNDE0LjI5MiAxNTAuNDA5IDQxNy4yNTcgMTQ4Ljg0OCA0MjAuMDI0IDE0Ni41NDNDNDIyLjc5MSAxNDQuMTY0IDQyNS4wNDMgMTQwLjcwNyA0MjYuNzgzIDEzNi4xNzNDNDI4LjYwMSAxMzEuNTY0IDQyOS41MSAxMjUuNTQyIDQyOS41MSAxMTguMTA4TDQ0OC4wMDggMTI2LjM2QzQ0OC4wMDggMTM1Ljg3NSA0NDUuOTUzIDE0NC43OTYgNDQxLjg0MiAxNTMuMTIyQzQzNy43MzEgMTYxLjQ0OCA0MzEuNTI2IDE2OC4xNzYgNDIzLjIyNSAxNzMuMzA2QzQxNS4wMDQgMTc4LjQzNSA0MDQuNjA5IDE4MSAzOTIuMDQgMTgxWk00MzMuNTQxIDE4MFYxMzcuNTExSDQyOS41MVY1N0g0NjJWMTgwSDQzMy41NDFaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNMjE2LjEwNCA1Ni45OTg4TDE3Ni4xMTggNTYuOTk4OEwyMjcuNzgyIDExOC40NEwxNzYuMTQ4IDE3OS45ODZIMjE2LjE1NEwyNjcuODMzIDExOC40NTVMMjE2LjEwNCA1Ni45OTg4WiIgZmlsbD0iI0ZFNDIwMCIvPgo8cGF0aCBkPSJNMjcxLjY1MyAxMjIuOTk4TDMwMy4zNTcgMTYwLjcwMkwzMDMuMzk3IDE2MC42NDVMMzE5LjY0NSAxNzkuOTM3TDI3OS40OTEgMTc5LjkzN0wyNTEuNjE3IDE0Ni43ODdMMjcxLjY1MyAxMjIuOTk4WiIgZmlsbD0iI0ZFNDIwMCIvPgo8cGF0aCBkPSJNMjcxLjY2NyAxMTMuODk1TDI1MS41OTIgOTAuMDU4OEwzMDguNjE4IDIyLjAwMDFIMzQ4LjYwNEwyNzEuNjY3IDExMy44OTVaIiBmaWxsPSIjRkU0MjAwIi8+CjxwYXRoIGQ9Ik01ODEuNDY4IDU2Ljk2SDYxN0w1NDAuNDMyIDI0Mkg1MDMuODk5TDU4MS40NjggNTYuOTZaIiBmaWxsPSJibGFjayIvPgo8cGF0aCBkPSJNNTQ0LjMxNyAxMzAuOTQxTDUxMy40MDggNTYuOTZINDc3LjM3Nkw1MjYuNDQyIDE3My4yNDZMNTQ0LjMxNyAxMzAuOTQxWiIgZmlsbD0iYmxhY2siLz4KPC9zdmc+PC9zdmc+" alt="UXUY 手提袋"></div>
         <div class="bag-name"><strong>独立判定</strong><span>BONUS</span></div><p class="bag-explanation">主奖中奖后，以本轮完整交易哈希和轮次编号独立判定是否加赠。</p><p class="extra-footnote">未中奖不加赠；获得时与主奖一起显示并记录。</p>
       </aside>
+      <aside class="recent-rounds-panel" aria-labelledby="recent-rounds-title"><header class="recent-rounds-head"><div><p class="eyebrow">RECENT DRAWS</p><h2 id="recent-rounds-title">最近10轮</h2></div><span class="recent-rounds-live">实时更新</span></header><ol id="recent-rounds-list" class="recent-rounds-list" aria-label="最近10轮开奖记录"></ol></aside>
     </section>
 
     <section class="prizes-section" aria-labelledby="prizes-title"><div class="section-heading"><div><p class="eyebrow">THE REWARDS</p><h2 id="prizes-title">活动奖品</h2></div><p>按稀有程度排列</p></div><div class="prize-list" id="prize-list"></div><p class="rarity-footnote">奖品以本轮开奖结果为准。</p><div class="fairness-note"><span class="note-icon">↗</span><p><strong>BNB Chain 链上哈希开奖</strong><br>时间、交易哈希与开奖结果可核查。</p><button type="button" data-dialog="rules">查看规则 ↗</button></div></section>
