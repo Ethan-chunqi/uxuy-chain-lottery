@@ -124,6 +124,9 @@ dialog[open]::backdrop{background:#1a223c70;backdrop-filter:blur(7px)}
 @media(prefers-reduced-motion:reduce){dialog,dialog::backdrop{transition:none!important}.machine.waiting .draw-button>span:last-child::before{animation:none!important}.round-verdict-slot>.round-verdict{animation:none!important}}
 .draw-button{height:52px;min-height:52px;line-height:1.2}.draw-button>span:first-child{white-space:nowrap}
 @media(max-width:650px){.draw-button{height:44px;min-height:44px}.machine-bottom{min-height:50px}}
+/* Finished decorations must not leave invisible scrollable bounds. */
+.result-confetti{inset:0}.result-art::before{opacity:0}.result-celebrate .result-art::before{animation-fill-mode:backwards}
+.result-body{overflow-x:hidden;overflow-y:auto}
 
 .prize-row[data-prize="suit"]{--rarity:#9d6910;background:linear-gradient(100deg,#fff8e9,#fffdf8 78%)}
 .prize-row[data-prize="hoodie"]{--rarity:#7856a8;background:linear-gradient(100deg,#f7f1ff,#fdfbff 78%)}
