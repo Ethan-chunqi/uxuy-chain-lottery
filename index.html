@@ -127,6 +127,16 @@ dialog[open]::backdrop{background:#1a223c70;backdrop-filter:blur(7px)}
 /* Finished decorations must not leave invisible scrollable bounds. */
 .result-confetti{inset:0}.result-art::before{opacity:0}.result-celebrate .result-art::before{animation-fill-mode:backwards}
 .result-body{overflow-x:hidden;overflow-y:auto}
+/* A visible next-round countdown, shared by the dialog and fixed result slot. */
+.auto-continue{display:flex;align-items:center;justify-content:flex-end;gap:7px;white-space:nowrap;min-width:0;min-height:30px}
+.auto-continue>[data-countdown-number]{display:inline-grid;place-items:center;flex-shrink:0;width:30px;height:30px;border-radius:9px;background:#fe420012;color:#df3b00;font:500 26px/1 var(--mono);font-variant-numeric:tabular-nums}
+.auto-continue>[data-countdown-number][hidden]{display:none}.auto-continue>[data-countdown-copy]{font-size:10px;line-height:1.4}
+.result-countdown{justify-content:center;gap:12px;min-height:62px;margin:4px 0 13px;padding:9px 14px;border-radius:12px}
+.result-countdown>[data-countdown-number]{width:42px;height:42px;border-radius:11px;background:#fff;font-size:34px;box-shadow:0 2px 8px #fe42000c}
+.result-countdown>[data-countdown-copy]{font-size:13px;font-weight:500}
+.result-placeholder.is-ready{background:#fff8f4;border-color:#ffdfd0}.result-placeholder.is-ready>strong{color:#df3b00}
+@media(max-width:650px){.auto-continue{gap:5px;min-height:28px}.auto-continue>[data-countdown-number]{width:26px;height:28px;font-size:23px;border-radius:7px}.auto-continue>[data-countdown-copy]{font-size:9px}.result-countdown{min-height:58px;gap:11px;padding:8px 12px;margin-bottom:12px}.result-countdown>[data-countdown-number]{width:38px;height:38px;font-size:31px;border-radius:10px}.result-countdown>[data-countdown-copy]{font-size:12px}.inline-award-copy{min-width:0}}
+@media(max-width:380px){.auto-continue>[data-countdown-copy]{font-size:8px}.result-countdown>[data-countdown-copy]{font-size:11px}}
 
 .prize-row[data-prize="suit"]{--rarity:#9d6910;background:linear-gradient(100deg,#fff8e9,#fffdf8 78%)}
 .prize-row[data-prize="hoodie"]{--rarity:#7856a8;background:linear-gradient(100deg,#f7f1ff,#fdfbff 78%)}
@@ -3028,10 +3038,17 @@ if (typeof window !== 'undefined') {
     else if (pendingId || requestBusy) { label = currentDraw?.position ? '等待交易确认' : '正在锁定数字'; heading = currentDraw?.position ? `数字 ${currentDraw.position} 已锁定 · 等待第 ${currentDraw.position} 笔交易` : '1–9 转动中，锁定你的数字'; description = liveReady ? '按锁定时间逐笔计数，最终确认后揭晓哈希。' : '网络暂不可用，本轮已保留，恢复后继续。'; }
     else if (!state) { label = '正在读取活动'; description = '正在连接活动服务。'; }
     else if (!pages && !state.isAdmin) { label = '现场工作人员操作'; heading = '请由现场工作人员开启抽奖'; description = '此页面可查看实时哈希与活动规则。'; }
-    else if (needsAck || autoContinue) { label = '自动继续中'; heading = '结果已保存'; description = autoContinue?.posting ? '正在同步结果。' : '展示结束后自动恢复下一轮。'; }
+    else if (needsAck || autoContinue) { label = '等待下一轮'; heading = '结果已保存'; description = autoContinue?.posting ? '正在同步结果。' : '倒计时结束后，可再次拉杆抽奖。'; }
     else if (!hasStock) { label = '奖品已发完'; heading = '本场活动已结束'; description = '全部主奖已发出。'; }
     else if (!state.started) { label = '正式活动尚未开启'; heading = '奖品就位，等待开场'; description = '请在管理中开启正式活动。'; }
     else if (!liveReady) { label = '等待链上连接'; heading = '等待网络恢复'; description = '连接成功后，即可拉杆锁定数字与时间。'; }
+    if (canDraw) heading = '可以开始抽奖';
+    const placeholder = $('.result-placeholder');
+    if (placeholder) {
+      placeholder.classList.toggle('is-ready', canDraw);
+      placeholder.querySelector('span').textContent = canDraw ? '下一轮' : '本轮结果';
+      placeholder.querySelector('strong').textContent = canDraw ? '可以开始抽奖' : busy ? '等待开奖' : heading;
+    }
     $('#draw-button-text').textContent = label;
     $('#draw-heading').textContent = heading;
     $('#draw-description').textContent = description;
@@ -3280,7 +3297,7 @@ if (typeof window !== 'undefined') {
     let next = $('#inline-auto-continue');
     if (!next) { next = document.createElement('p'); next.id = 'inline-auto-continue'; next.className = 'auto-continue'; $('.inline-result-actions').append(next); }
     next.hidden = isScreen || isRoundScreen || Boolean(verifyId) || (!pages && !state?.isAdmin);
-    next.textContent = draw.acknowledgedAt ? '本轮结束' : bagPending ? '正在揭晓奖励' : '结果已保存';
+    paintAutoContinue(next, 'presenting', null, draw.acknowledgedAt ? '本轮结束' : bagPending ? '正在揭晓奖励' : '结果已保存');
     updateAutoContinueText();
     $('#round-caption').textContent = bagPending && prize ? '主奖已定格 · 加赠待揭晓' : '本轮已定格 · 奖励已统计';
     $$('.prize-row').forEach(el => el.classList.toggle('is-hit', el.dataset.prize === draw.awardKey));
@@ -3337,14 +3354,38 @@ if (typeof window !== 'undefined') {
     saveAutoContinue(autoContinue); updateAutoContinueText(); updateControls();
     tickAutoContinue();
   }
+  function paintAutoContinue(element, phase, seconds, copy) {
+    if (!element) return;
+    const signature = `${phase}:${seconds ?? ''}:${copy}`;
+    if (element.dataset.countdownSignature === signature) return;
+    let number = element.querySelector('[data-countdown-number]');
+    let text = element.querySelector('[data-countdown-copy]');
+    if (!number || !text) {
+      number = document.createElement('strong'); number.dataset.countdownNumber = '';
+      text = document.createElement('span'); text.dataset.countdownCopy = '';
+      element.replaceChildren(number, text);
+      element.setAttribute('role', 'status'); element.setAttribute('aria-atomic', 'true');
+    }
+    const changedNumber = number.textContent !== String(seconds);
+    element.dataset.state = phase;
+    number.hidden = phase !== 'counting';
+    if (phase === 'counting') number.textContent = String(seconds);
+    text.textContent = copy;
+    element.dataset.countdownSignature = signature;
+    if (phase === 'counting' && changedNumber && !reducedMotion && number.animate) {
+      number.getAnimations().forEach(animation => animation.cancel());
+      number.animate([{ opacity: .45, transform: 'translateY(3px) scale(.92)' }, { opacity: 1, transform: 'translateY(0) scale(1)' }], { duration: 180, easing: 'cubic-bezier(.2,.8,.3,1)' });
+    }
+  }
   function updateAutoContinueText() {
     if (!autoContinue) return;
     const seconds = Math.max(0, Math.ceil((autoContinue.deadline - Date.now()) / 1000));
-    const text = autoContinue.waitingForPresentation || (resultPresentation?.id === autoContinue.draw.id && !resultPresentation.ready) ? '正在展示奖品' : autoContinue.posting || seconds === 0 ? '正在恢复下一轮…' : `${seconds} 秒后自动继续`;
+    const phase = autoContinue.waitingForPresentation || (resultPresentation?.id === autoContinue.draw.id && !resultPresentation.ready) ? 'presenting' : autoContinue.posting || seconds === 0 ? 'syncing' : 'counting';
+    const copy = phase === 'presenting' ? '正在展示奖品' : phase === 'syncing' ? '正在恢复下一轮…' : '秒后可再次抽奖';
     const modalText = $('#result-countdown');
-    if (modalText && $('#result-dialog').dataset.drawId === autoContinue.draw.id) modalText.textContent = text;
+    if (modalText && $('#result-dialog').dataset.drawId === autoContinue.draw.id) paintAutoContinue(modalText, phase, seconds, copy);
     const inlineText = $('#inline-auto-continue');
-    if (inlineText && inlineDraw?.id === autoContinue.draw.id) { inlineText.hidden = false; inlineText.textContent = text; }
+    if (inlineText && inlineDraw?.id === autoContinue.draw.id) { inlineText.hidden = false; paintAutoContinue(inlineText, phase, seconds, copy); }
   }
   async function tickAutoContinue() {
     const record = autoContinue;
@@ -3481,11 +3522,12 @@ if (typeof window !== 'undefined') {
       <p class="result-eyebrow">${won ? review ? '中奖记录' : '恭喜中奖' : '开奖结果'}</p>
       <h2>${won ? escapeHTML(prize.name) : '本轮未中奖'}</h2>
       <p class="result-subtitle">${preview ? '预览结果' : '结果已保存'}</p>
+      ${automatic ? '<p id="result-countdown" class="result-countdown auto-continue" role="status" aria-atomic="true" data-state="presenting">正在展示奖品</p>' : ''}
       <section class="result-lock-panel" aria-label="本轮锁定数字与毫秒时间"><div class="result-number"><span>锁定数字</span><b>${draw.position || '—'}</b></div><div class="result-locked-time"><span>${clockOwner}锁定时间 · UTC+08:00</span><small>${escapeHTML(locked.date)}</small><strong>${escapeHTML(locked.time)}</strong><p>取此时间后的第 ${draw.position || '—'} 笔交易</p></div></section>
       ${won ? `<div class="result-art"><img src="${window.UXUY_INLINE_ASSETS[prize.image]}" alt="${escapeHTML(prize.name)}">${draw.bag ? `<img class="result-bag" src="${window.UXUY_INLINE_ASSETS['bag.svg']}" alt="附赠 UXUY 手提袋">` : ''}</div>` : emptySparkles('result-empty-symbol')}
       ${won ? `<p class="result-bag-note${draw.bag ? '' : ' no-bag'}">${draw.bag ? '＋ UXUY 手提袋 × 1' : '未加赠 UXUY 手提袋'}</p>` : ''}
       <div class="result-receipt"><div class="receipt-row"><span>本轮哈希尾号</span><strong>${escapeHTML(suffixOf(draw))}</strong></div><div class="receipt-row"><span>命中奖区</span><span>${escapeHTML(target)}</span></div><div class="receipt-row"><span>目标交易顺位</span><span>锁定时间后第 ${draw.globalTransactionOrdinal || draw.position || '—'} 笔</span></div><div class="receipt-row"><span>区块 / 区块内位置</span><span>#${num(draw.selectedBlock)} / 第 ${Number.isInteger(draw.txIndex) ? draw.txIndex + 1 : '—'} 笔</span></div><div class="receipt-row chain-time-row"><span>链上区块时间<br>${hasChainMilliseconds(draw) ? '原生毫秒' : '秒精度（历史记录）'}</span><span>${escapeHTML(chain.full)}<br>UTC+08:00</span></div><a class="receipt-hash" href="${chainLink(hash)}" target="_blank" rel="noopener">${escapeHTML(hash)}</a><div class="receipt-links"><a href="${chainLink(hash)}" target="_blank" rel="noopener">BscScan 查看交易 ↗</a><a href="${reviewLink(draw.id, drawMode)}" target="_blank" rel="noopener">本轮完整查验 ↗</a></div></div>
-      ${automatic ? '<p id="result-countdown" class="result-countdown auto-continue" role="status">正在展示奖品</p>' : '<button type="button" class="primary-button" id="close-result">关闭</button>'}<p class="result-pickup-note">${review ? `轮次 ${escapeHTML(draw.id)} · ${escapeHTML(datetime(draw.completedAt))}` : '结果自动保存'}</p>
+      ${automatic ? '' : '<button type="button" class="primary-button" id="close-result">关闭</button>'}<p class="result-pickup-note">${review ? `轮次 ${escapeHTML(draw.id)} · ${escapeHTML(datetime(draw.completedAt))}` : '结果自动保存'}</p>
     </div>`;
     const receipt = $('.result-receipt');
     const proof = document.createElement('details'); proof.className = 'result-proof'; proof.open = true;
