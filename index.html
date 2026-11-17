@@ -166,6 +166,7 @@ html[lang="en"] .auto-continue{white-space:normal}html[lang="en"] .auto-continue
 /* Prize colors have independent results. Only the jackpot exposes its quantity. */
 .prize-row { grid-template-areas: "art title range"; grid-template-columns: 140px minmax(0, 1fr) 180px; }
 .jackpot-stock { color: #9d6910; font-size: 12px; line-height: 1.5; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.prize-title h3 { font-weight: 600; letter-spacing: .025em; line-height: 1.5; margin-top: 4px; }
 html[data-theme="dark"] .jackpot-stock { color: #e8bf6d; }
 @media (max-width: 900px) {
   .prize-row { grid-template-columns: 120px minmax(0, 1fr) 150px; }
@@ -515,6 +516,73 @@ html[data-theme="dark"] dialog[open]::backdrop { background: #03060bbd; }
 @starting-style {
   html[data-theme="dark"] dialog[open]::backdrop { background: #03060b00; }
 }
+
+/* UXUY orange is the primary color in the light event theme. */
+html:not([data-theme="dark"]) {
+  --cream: #fff0e3;
+  --paper: #fffdfa;
+  --ink: #29170f;
+  --muted: #79513e;
+  --line: #ffc2a1;
+  --orange: #fe4200;
+  --orange-dark: #c93600;
+}
+html:not([data-theme="dark"]) body {
+  color: var(--ink);
+  background: linear-gradient(145deg, #ffdfc5 0%, #fff2e7 45%, #fff8f1 100%);
+}
+html:not([data-theme="dark"]) .site-header {
+  background: #fff8f1;
+  border-top: 5px solid #fe4200;
+  border-bottom-color: #ffad80;
+}
+html:not([data-theme="dark"]) .header-actions button { color: #813613; }
+html:not([data-theme="dark"]) .header-actions button:hover { background: #ffdfca; color: #a82c00; }
+html:not([data-theme="dark"]) .intro h1 > span { color: #d83900; }
+html:not([data-theme="dark"]) :is(.machine, .extra-prize, .recent-rounds-panel) {
+  background: #fffdfa;
+  border-color: #ffae81;
+  box-shadow: 0 10px 28px #be480c12;
+}
+html:not([data-theme="dark"]) .machine { border-top: 4px solid #fe4200; }
+html:not([data-theme="dark"]) .hash-panel {
+  background: #fff0df;
+  border-color: #ffad80;
+}
+html:not([data-theme="dark"]) .hash-digits > span {
+  color: #c93600;
+  background: #fffdfa;
+  border-color: #ffad80;
+}
+html:not([data-theme="dark"]) .round-panel { background: #ffe2ca; border-color: #fe4200; }
+html:not([data-theme="dark"]) .round-panel .hash-digits > span {
+  color: #fff;
+  background: #fe4200;
+  border-color: #e23900;
+  box-shadow: inset 0 -3px 0 #a82c0024;
+}
+html:not([data-theme="dark"]) .number-reel { color: #c93600; background: #ffe2ca; border-color: #fe4200; }
+html:not([data-theme="dark"]) .bag-art { background: #fff0df; }
+html:not([data-theme="dark"]) :is(.prize-row[data-prize^="hoodie_"], .prize-row[data-prize^="tshirt_"]) {
+  --rarity: #c93600;
+  background: #fff2e7;
+  border-color: #ffbd98;
+}
+html:not([data-theme="dark"]) .prize-row[data-prize="paddle"] {
+  --rarity: #9a5700;
+  background: #fff0c9;
+  border-color: #e1a748;
+}
+html:not([data-theme="dark"]) .prize-row[data-prize="empty"] { background: #fff8f1; border-color: #e7cbb9; }
+html:not([data-theme="dark"]) :is(.round-verdict, .result-placeholder.is-ready) { background: #ffe4d0; border-color: #ff8e56; }
+html:not([data-theme="dark"]) .recent-round-item { background: #fff6ed; border-color: #ffd3b8; }
+html:not([data-theme="dark"]) .recent-round-item.is-latest { background: #ffe4cf; border-color: #fe4200; }
+html:not([data-theme="dark"]) .recent-round-item.is-empty-slot { background: #fff8f2; border-color: #f0c9ae; }
+html:not([data-theme="dark"]) :is(.section-heading h2, .recent-rounds-head h2, .extra-prize h2) { color: #b93000; }
+html:not([data-theme="dark"]) dialog { background: #fffdfa; border-color: #ffb58a; }
+html:not([data-theme="dark"]) .dialog-head { background: #fff2e7; border-color: #ffd0b4; }
+html:not([data-theme="dark"]) .result-art { background: #fff0e2; }
+html:not([data-theme="dark"]) .pages-preview-notice { color: #833919 !important; background: #ffe1cb !important; border-color: #ffb58a !important; }
 
 /* The permanent draw journal shares the page's light / dark palette. */
 .screen-view .recent-rounds-panel,.round-screen-view .recent-rounds-panel{display:none}
@@ -889,8 +957,8 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
     margin: 0;
     padding: calc(var(--tv-u) * .85) calc(var(--tv-u) * 1.3);
     display: grid;
-    grid-template-columns: minmax(0, 60fr) minmax(0, 17fr) minmax(0, 23fr);
-    grid-template-rows: calc(var(--tv-u) * 3.3) calc(var(--tv-u) * 16.8) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 58fr) minmax(0, 23fr) minmax(0, 19fr);
+    grid-template-rows: calc(var(--tv-u) * 3.3) calc(var(--tv-u) * 13.2) minmax(0, 1fr);
     grid-template-areas: "intro intro intro" "machine bag records" "machine prizes records";
     gap: calc(var(--tv-u) * .85);
     align-items: stretch;
@@ -1518,8 +1586,8 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .prize-list {
     min-height: 0;
     display: grid;
-    grid-template-rows: repeat(7, minmax(0, 1fr));
-    gap: calc(var(--tv-u) * .4);
+    grid-template-rows: minmax(0, 1.5fr) repeat(5, minmax(0, 1fr)) minmax(0, .85fr);
+    gap: max(6px, calc(var(--tv-u) * .45));
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .prize-row {
@@ -1528,8 +1596,8 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
     grid-template-areas: "art title";
     grid-template-columns: calc(var(--tv-u) * 3.5) minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr);
-    gap: calc(var(--tv-u) * .4);
-    padding: calc(var(--tv-u) * .35) calc(var(--tv-u) * .4);
+    gap: max(9px, calc(var(--tv-u) * .55));
+    padding: max(5px, calc(var(--tv-u) * .4)) max(9px, calc(var(--tv-u) * .55));
     border-radius: calc(var(--tv-u) * .55);
     background: color-mix(in srgb, var(--rarity, #8a95a3) 6%, var(--tv-panel));
     border-color: color-mix(in srgb, var(--rarity, #8a95a3) 20%, var(--tv-line));
@@ -1579,12 +1647,12 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .prize-title h3 {
-    margin-top: calc(var(--tv-u) * .2);
-    font-size: calc(var(--tv-u) * 1.02);
+    margin-top: 0;
+    font-size: clamp(14px, calc(var(--tv-u) * 1.05), 21px);
     color: var(--tv-ink);
-    line-height: 1.15;
-    letter-spacing: -.015em;
-    overflow-wrap: anywhere;
+    line-height: 1.45;
+    letter-spacing: .035em;
+    overflow-wrap: normal;
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .prize-tier {
@@ -2103,13 +2171,21 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
 
 @media (min-width: 1100px) and (min-height: 650px) {
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .jackpot-stock {
-    font-size: calc(var(--tv-u) * .65);
-    line-height: 1.25;
-    margin-top: calc(var(--tv-u) * .12);
+    font-size: clamp(11px, calc(var(--tv-u) * .75), 15px);
+    line-height: 1.4;
+    margin-top: 3px;
     color: var(--rarity);
   }
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .prize-title h3 {
-    font-size: calc(var(--tv-u) * .85);
+    font-size: clamp(14px, calc(var(--tv-u) * 1.05), 21px);
+  }
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .prize-tier {
+    font-size: clamp(11px, calc(var(--tv-u) * .72), 15px);
+    line-height: 1.35;
+    margin-bottom: 3px;
+  }
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .empty-prize-row .prize-tier {
+    display: none;
   }
 }
 
@@ -2121,6 +2197,236 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
   }
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .prize-art .product-crop[data-photo^="hoodie_"] > img { width: 200%; }
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .prize-art .product-crop[data-photo^="tshirt_"] > img { width: 300%; }
+}
+
+html[data-display="tv"]:not([data-theme="dark"]) body:not(.screen-view):not(.round-screen-view) {
+  --tv-bg: #fff0e3;
+  --tv-panel: #fffdfa;
+  --tv-soft: #fff0df;
+  --tv-ink: #29170f;
+  --tv-muted: #79513e;
+  --tv-line: #ffbb94;
+  --tv-orange-soft: #ffe0c9;
+  --tv-orange-ink: #c93600;
+}
+@media (min-width: 1100px) and (min-height: 650px) {
+  html[data-display="tv"]:not([data-theme="dark"]) body:not(.screen-view):not(.round-screen-view) .machine {
+    border-top: 4px solid #fe4200;
+  }
+  html[data-display="tv"]:not([data-theme="dark"]) body:not(.screen-view):not(.round-screen-view) .round-panel .hash-digits > span,
+  html[data-display="tv"]:not([data-theme="dark"]) body:not(.screen-view):not(.round-screen-view) .round-panel.round-stopped .hash-digits > span {
+    color: #fff;
+    background: #fe4200;
+    border-color: #e23900;
+  }
+  html[data-display="tv"]:not([data-theme="dark"]) body:not(.screen-view):not(.round-screen-view) .global-hash-screen .hash-digits > span {
+    color: #c93600;
+  }
+  html[data-display="tv"]:not([data-theme="dark"]) body:not(.screen-view):not(.round-screen-view) .prize-row[data-prize^="hoodie_"],
+  html[data-display="tv"]:not([data-theme="dark"]) body:not(.screen-view):not(.round-screen-view) .prize-row[data-prize^="tshirt_"] {
+    --rarity: #c93600;
+    background: #fff0e3;
+    border-color: #ffa773;
+  }
+  html[data-display="tv"]:not([data-theme="dark"]) body:not(.screen-view):not(.round-screen-view) .prize-row[data-prize="paddle"] {
+    background: #fff0c9;
+    border-color: #dda03b;
+  }
+}
+
+/* Progress follows the saved next-round deadline in both result locations. */
+.auto-continue.recharge-status {
+  display: grid;
+  align-content: center;
+  justify-content: stretch;
+  gap: 5px;
+  min-height: 28px;
+  white-space: normal;
+  text-align: left;
+  color: #c63b0a;
+}
+
+#inline-auto-continue.recharge-status {
+  width: clamp(130px, 13vw, 190px);
+  max-width: 100%;
+  margin: 0;
+}
+
+.recharge-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.recharge-status [data-countdown-copy] {
+  max-width: none;
+  color: inherit;
+  font-size: 11px;
+  line-height: 1.25;
+  font-weight: 650;
+  text-align: left;
+}
+
+.recharge-time {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  flex-shrink: 0;
+  color: #8d6857;
+  font: 500 10px/1.2 var(--sans, sans-serif);
+  font-variant-numeric: tabular-nums;
+}
+
+.recharge-status [data-countdown-number] {
+  display: inline;
+  width: auto;
+  height: auto;
+  padding: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  box-shadow: none;
+}
+
+.recharge-track {
+  display: block;
+  position: relative;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #f5d5c3;
+  box-shadow: inset 0 1px 2px #8d371512;
+}
+
+.recharge-fill {
+  display: block;
+  position: relative;
+  width: calc(var(--recharge-progress, 0) * 100%);
+  height: 100%;
+  border-radius: inherit;
+  overflow: hidden;
+  background: linear-gradient(90deg, #ffb66b 0%, #ff7a32 42%, #fe4200 100%);
+  box-shadow: 0 0 10px #fe420040;
+  transition: width .23s linear;
+}
+
+.recharge-fill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, #fff9d5 1px, transparent 2px);
+  background-size: 20px 8px;
+  animation: recharge-particles .85s linear infinite;
+}
+
+.recharge-fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 100%;
+  border-radius: 999px;
+  background: #ffe7a6;
+  box-shadow: -3px 0 9px #fff8d5;
+}
+
+.recharge-status[data-state="presenting"] .recharge-track {
+  visibility: hidden;
+}
+
+.recharge-status:not([data-state="counting"]) .recharge-time {
+  display: none;
+}
+
+.recharge-status[data-state="syncing"] .recharge-fill {
+  transition: none;
+}
+
+#result-countdown.recharge-status {
+  width: 100%;
+  min-height: 64px;
+  padding: 13px 16px;
+  gap: 9px;
+}
+
+#result-countdown .recharge-heading [data-countdown-copy] {
+  font-size: 14px;
+}
+
+#result-countdown .recharge-time {
+  font-size: 12px;
+}
+
+#result-countdown .recharge-track {
+  height: 10px;
+}
+
+html[data-theme="dark"] .recharge-status {
+  color: #ffae83;
+}
+
+html[data-theme="dark"] .recharge-time {
+  color: #d6a58a;
+}
+
+html[data-theme="dark"] .recharge-track {
+  background: #653924;
+}
+
+@keyframes recharge-particles {
+  to { background-position-x: 40px; }
+}
+
+@media (max-width: 650px) {
+  #inline-auto-continue.recharge-status { width: 132px; gap: 4px; min-height: 24px; }
+  #inline-auto-continue [data-countdown-copy] { font-size: 10px; }
+  #inline-auto-continue .recharge-time { font-size: 9px; }
+  #inline-auto-continue .recharge-track { height: 6px; }
+  #result-countdown.recharge-status { min-height: 62px; padding: 12px; }
+}
+
+@media (min-width: 1000px) and (min-aspect-ratio: 6/5) {
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) :is(#inline-auto-continue, #result-countdown).recharge-status {
+    display: grid;
+    gap: calc(var(--tv-u) * .45);
+    min-height: calc(var(--tv-u) * 2.6);
+  }
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #inline-auto-continue.recharge-status {
+    width: calc(var(--tv-u) * 15);
+  }
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recharge-status [data-countdown-copy] {
+    max-width: none;
+    font-size: calc(var(--tv-u) * 1.15);
+  }
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recharge-status [data-countdown-number] {
+    width: auto;
+    height: auto;
+    color: inherit;
+    font-size: inherit;
+    background: none;
+  }
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recharge-time {
+    font-size: calc(var(--tv-u) * .9);
+  }
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .recharge-track {
+    height: calc(var(--tv-u) * .65);
+  }
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #result-countdown.recharge-status {
+    min-height: calc(var(--tv-u) * 5.8);
+    padding: calc(var(--tv-u) * 1.1);
+    gap: calc(var(--tv-u) * .8);
+  }
+  html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #result-countdown .recharge-heading [data-countdown-copy] {
+    font-size: calc(var(--tv-u) * 1.45);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recharge-fill { transition: none; }
+  .recharge-fill::before { animation: none; }
 }
 </style>
 <script>//---------------------------------------------------------------------
@@ -4429,6 +4735,13 @@ window.UXUY_INLINE_ASSETS={"bag-light.svg":"data:image/svg+xml;base64,PHN2ZyB4bW
   const STORAGE_KEY = 'uxuy-ui-language';
   const HAN = /[\u3400-\u9fff]/;
   const dictionary = new Map(Object.entries({
+    '＋ 手提袋': '+ Gift Bag',
+    '匹克球拍 · 1 双': 'Pickleball · 1 Pair',
+    '宠物卫衣 · 黑色': 'Pet Hoodie · Black',
+    '宠物卫衣 · 橙色': 'Pet Hoodie · Orange',
+    '短袖 · 橙色': 'T-Shirt · Orange',
+    '短袖 · 白色': 'T-Shirt · White',
+    '短袖 · 黑色': 'T-Shirt · Black',
     "本机活动 · BNB Chain 链上数据 · 请在现场同一浏览器操作": "Local event · BNB Chain data · Use the same browser at the venue",
     "本机活动": "Local event",
     "UXUY 匹克球拍 · 1 双": "UXUY Pickleball Paddles · 1 Pair",
@@ -4589,6 +4902,9 @@ window.UXUY_INLINE_ASSETS={"bag-light.svg":"data:image/svg+xml;base64,PHN2ZyB4bW
     '同一 RPC 的 finalized 区块': 'Finalized blocks from the same RPC provider', '设备时间、演示权重与本机记录均可由使用者修改；此静态版仅供预览。': 'Users can change device time, demo weights, and local records. This static version is a preview only.',
     '本轮编号已保存，恢复后继续。': 'The draw ID is saved. It will resume when the connection returns.', '系统将使用同一本轮编号重试。': 'Retrying with the same draw ID.',
     '本机浏览器': 'Server', '浏览器': 'Browser', '本机浏览器': 'This browser', '本机预览': 'Local preview', '手绘展示': ' illustration', '手提袋': 'Gift Bag',
+    '好运充能中': 'Recharging your luck', '好运充能': 'Luck recharge', '秒': 's',
+    '蓄力已满，正在同步': 'Charged. Syncing…', '蓄力完成，可以再抽': 'Fully charged. Draw again.',
+    '能量蓄满后，可再次拉杆抽奖。': 'Pull again once the energy bar is full.',
   }));
   const patterns = [
     [/^限量 10 份 · 剩余 ([\d,]+) 份$/, (_, n) => `Limited to 10 pairs · ${n} remaining`],
@@ -5378,7 +5694,8 @@ if (typeof window !== 'undefined') {
     const mainRows = Object.entries(PRIZES).map(([key, prize], index) => {
       const interval = list.find(item => item.key === key);
       const range = interval ? `${hex(interval.startHex ?? interval.start)}–${hex(interval.endHex ?? interval.end)}` : '已售罄';
-      return `<article data-prize="${key}" class="prize-row${key === 'paddle' ? ' jackpot-row' : ''}${stock[key] <= 0 ? ' sold-out' : ''}"><div class="prize-range"><small>HASH SUFFIX / HEX</small><strong>${escapeHTML(range)}</strong></div><span class="prize-equals" aria-hidden="true">→</span><div class="prize-art"><div class="product-crop" data-photo="${key}"><img src="${window.UXUY_INLINE_ASSETS[prize.image]}" alt="${escapeHTML(prize.name)}" loading="lazy"></div></div><div class="prize-title"><span class="prize-tier">${escapeHTML(RARITY[key])}</span><h3>${escapeHTML(prize.name)}</h3>${key === 'paddle' ? `<p class="jackpot-stock">限量 10 份 · 剩余 ${num(stock.paddle)} 份</p>` : ''}</div><div class="prize-info"></div></article>`;
+      const label = prize.name.replace(/^UXUY /, '');
+      return `<article data-prize="${key}" class="prize-row${key === 'paddle' ? ' jackpot-row' : ''}${stock[key] <= 0 ? ' sold-out' : ''}"><div class="prize-range"><small>HASH SUFFIX / HEX</small><strong>${escapeHTML(range)}</strong></div><span class="prize-equals" aria-hidden="true">→</span><div class="prize-art"><div class="product-crop" data-photo="${key}"><img src="${window.UXUY_INLINE_ASSETS[prize.image]}" alt="${escapeHTML(prize.name)}" loading="lazy"></div></div><div class="prize-title">${key === 'paddle' ? '<span class="prize-tier">超级大奖</span>' : ''}<h3>${escapeHTML(label)}</h3>${key === 'paddle' ? `<p class="jackpot-stock">限量 10 份 · 剩余 ${num(stock.paddle)} 份</p>` : ''}</div><div class="prize-info"></div></article>`;
     }).join('');
     const empty = list.find(item => item.key === 'empty');
     const emptyRange = empty ? `${hex(empty.startHex ?? empty.start)}–${hex(empty.endHex ?? empty.end)}` : '无未中奖区间';
@@ -5455,17 +5772,17 @@ if (typeof window !== 'undefined') {
     else if (pendingId || requestBusy) { label = currentDraw?.position ? '等待交易确认' : '正在锁定数字'; heading = currentDraw?.position ? `数字 ${currentDraw.position} 已锁定 · 等待第 ${currentDraw.position} 笔交易` : '1–9 转动中，锁定你的数字'; description = liveReady ? '按锁定时间逐笔计数，最终确认后揭晓哈希。' : '网络暂不可用，本轮已保留，恢复后继续。'; }
     else if (!state) { label = '正在读取活动'; description = '正在连接活动服务。'; }
     else if (!pages && !state.isAdmin) { label = '现场工作人员操作'; heading = '请由现场工作人员开启抽奖'; description = '此页面可查看实时哈希与活动规则。'; }
-    else if (needsAck || autoContinue) { label = '等待下一轮'; heading = '结果已保存'; description = autoContinue?.posting ? '正在同步结果。' : '倒计时结束后，可再次拉杆抽奖。'; }
+    else if (needsAck || autoContinue) { label = '好运充能中'; heading = autoContinue?.posting || (autoContinue && Date.now() >= autoContinue.deadline) ? '蓄力已满，正在同步' : '好运充能中'; description = '能量蓄满后，可再次拉杆抽奖。'; }
     else if (!hasStock) { label = '奖品已发完'; heading = '本场活动已结束'; description = '全部主奖已发出。'; }
     else if (!state.started) { label = '正式活动尚未开启'; heading = '奖品就位，等待开场'; description = '请在管理中开启正式活动。'; }
     else if (!liveReady) { label = '等待链上连接'; heading = '等待网络恢复'; description = '连接成功后，即可拉杆锁定数字与时间。'; }
     if (pendingId && !requestBusy && !revealing && !numberRolling && !currentDraw?.position) { label = '正在重试连接'; heading = '正在重新锁定本轮'; description = '链上连接或校时暂不可用，正在使用同一轮次重试。'; }
-    if (canDraw) heading = '可以开始抽奖';
+    if (canDraw) heading = state?.lastDraw?.acknowledgedAt ? '蓄力完成，可以再抽' : '可以开始抽奖';
     const placeholder = $('.result-placeholder');
     if (placeholder) {
       placeholder.classList.toggle('is-ready', canDraw);
       placeholder.querySelector('span').textContent = canDraw ? '下一轮' : '本轮结果';
-      placeholder.querySelector('strong').textContent = canDraw ? '可以开始抽奖' : busy ? '等待开奖' : heading;
+      placeholder.querySelector('strong').textContent = canDraw ? heading : busy ? '等待开奖' : heading;
     }
     $('#draw-button-text').textContent = label;
     $('#draw-heading').textContent = heading;
@@ -5741,7 +6058,8 @@ if (typeof window !== 'undefined') {
     const recent = [...records.values()].sort((a, b) => Number(b.sequence || 0) - Number(a.sequence || 0) || Date.parse(b.completedAt) - Date.parse(a.completedAt)).slice(0, 10);
     const rows = recent.map((draw, index) => {
       const prize = PRIZES[draw.awardKey] || LEGACY_PRIZES[draw.awardKey]; const locked = lockTime(draw);
-      return `<li class="recent-round-item${index === 0 ? ' is-latest' : ''}" data-award="${escapeHTML(draw.awardKey)}" data-round-id="${escapeHTML(draw.id)}"><div class="recent-round-meta"><strong class="recent-round-index">#${String(draw.sequence || '—').padStart(3, '0')}</strong><time title="${escapeHTML(locked.full)} UTC+08:00">${escapeHTML(locked.time)}</time></div><div class="recent-round-outcome"><code class="recent-round-hash">${escapeHTML(suffixOf(draw))}</code><div class="recent-round-gift"><strong>${escapeHTML(prize?.name || '本轮未中奖')}</strong><span class="recent-round-bonus${draw.bag && prize ? ' has-bag' : ''}">${prize ? draw.bag ? '＋ UXUY 手提袋' : '无加赠' : '—'}</span></div></div></li>`;
+      const label = (draw.awardName || prize?.name || '本轮未中奖').replace(/^UXUY /, '');
+      return `<li class="recent-round-item${index === 0 ? ' is-latest' : ''}" data-award="${escapeHTML(draw.awardKey)}" data-round-id="${escapeHTML(draw.id)}"><div class="recent-round-meta"><strong class="recent-round-index">#${String(draw.sequence || '—').padStart(3, '0')}</strong><time title="${escapeHTML(locked.full)} UTC+08:00">${escapeHTML(locked.time)}</time></div><div class="recent-round-outcome"><code class="recent-round-hash">${escapeHTML(suffixOf(draw))}</code><div class="recent-round-gift"><strong>${escapeHTML(label)}</strong><span class="recent-round-bonus${draw.bag && prize ? ' has-bag' : ''}">${prize ? draw.bag ? '＋ 手提袋' : '无加赠' : '—'}</span></div></div></li>`;
     });
     for (let index = recent.length; index < 10; index++) rows.push('<li class="recent-round-placeholder"><span>—</span><span>等待下一轮</span></li>');
     renderHTML(list, rows.join(''));
@@ -5789,27 +6107,40 @@ if (typeof window !== 'undefined') {
     savedAutoContinue = record ? { id: record.draw.id, mode: record.draw.mode || mode, deadline: record.deadline } : null;
     try { if (savedAutoContinue) sessionStorage.setItem(autoContinueStorageKey, JSON.stringify(savedAutoContinue)); else sessionStorage.removeItem(autoContinueStorageKey); } catch {}
   }
-  function ensureAutoContinue(draw, restart = false) {
+  function ensureAutoContinue(draw) {
     if (!canAutoContinue() || draw?.status !== 'completed' || draw.acknowledgedAt) return;
     if (resultPresentation?.id === draw.id && !resultPresentation.ready) return;
-    if (!restart && autoContinue?.draw.id === draw.id) { autoContinue.draw = draw; updateAutoContinueText(); return; }
-    const saved = !restart && savedAutoContinue?.id === draw.id && savedAutoContinue.mode === (draw.mode || mode) && Number.isFinite(savedAutoContinue.deadline) ? savedAutoContinue : null;
+    if (autoContinue?.draw.id === draw.id) { autoContinue.draw = draw; autoContinue.waitingForPresentation = false; updateAutoContinueText(); tickAutoContinue(); return; }
+    const saved = savedAutoContinue?.id === draw.id && savedAutoContinue.mode === (draw.mode || mode) && Number.isFinite(savedAutoContinue.deadline) ? savedAutoContinue : null;
     autoContinue = { draw, deadline: saved?.deadline ?? Date.now() + 5000, posting: false, retryAt: 0, failures: 0 };
     saveAutoContinue(autoContinue); updateAutoContinueText(); updateControls();
     tickAutoContinue();
   }
-  function paintAutoContinue(element, phase, seconds, copy) {
+  function paintAutoContinue(element, phase, seconds, copy, progress = 0) {
     if (!element) return;
+    element.style.setProperty('--recharge-progress', String(progress));
+    element.dataset.rechargeProgress = String(Math.round(progress * 100));
     const signature = `${phase}:${seconds ?? ''}:${copy}`;
-    if (element.dataset.countdownSignature === signature) return;
     let number = element.querySelector('[data-countdown-number]');
     let text = element.querySelector('[data-countdown-copy]');
-    if (!number || !text) {
+    let track = element.querySelector('[data-recharge-track]');
+    if (!number || !text || !track) {
+      const heading = document.createElement('span'); heading.className = 'recharge-heading';
       number = document.createElement('strong'); number.dataset.countdownNumber = '';
       text = document.createElement('span'); text.dataset.countdownCopy = '';
-      element.replaceChildren(number, text);
+      const time = document.createElement('span'); time.className = 'recharge-time';
+      const unit = document.createElement('span'); unit.dataset.countdownUnit = ''; unit.textContent = '秒';
+      time.append(number, unit); heading.append(text, time);
+      track = document.createElement('span'); track.className = 'recharge-track'; track.dataset.rechargeTrack = '';
+      track.setAttribute('role', 'progressbar'); track.setAttribute('aria-label', '好运充能'); track.setAttribute('aria-valuemin', '0'); track.setAttribute('aria-valuemax', '100');
+      const fill = document.createElement('span'); fill.className = 'recharge-fill'; fill.setAttribute('aria-hidden', 'true');
+      track.append(fill);
+      element.replaceChildren(heading, track);
+      element.classList.add('recharge-status');
       element.setAttribute('role', 'status'); element.setAttribute('aria-atomic', 'true');
     }
+    track.setAttribute('aria-valuenow', String(Math.round(progress * 100)));
+    if (element.dataset.countdownSignature === signature) return;
     const changedNumber = number.textContent !== String(seconds);
     element.dataset.state = phase;
     number.hidden = phase !== 'counting';
@@ -5823,13 +6154,15 @@ if (typeof window !== 'undefined') {
   }
   function updateAutoContinueText() {
     if (!autoContinue) return;
-    const seconds = Math.max(0, Math.ceil((autoContinue.deadline - Date.now()) / 1000));
+    const remaining = Math.max(0, autoContinue.deadline - Date.now());
+    const seconds = Math.ceil(remaining / 1000);
+    const progress = Math.max(0, Math.min(1, 1 - remaining / 5000));
     const phase = autoContinue.waitingForPresentation || (resultPresentation?.id === autoContinue.draw.id && !resultPresentation.ready) ? 'presenting' : autoContinue.posting || seconds === 0 ? 'syncing' : 'counting';
-    const copy = phase === 'presenting' ? '正在展示奖品' : phase === 'syncing' ? '正在恢复下一轮…' : '秒后可再次抽奖';
+    const copy = phase === 'presenting' ? '正在展示奖品' : phase === 'syncing' ? '蓄力已满，正在同步' : '好运充能中';
     const modalText = $('#result-countdown');
-    if (modalText && $('#result-dialog').dataset.drawId === autoContinue.draw.id) paintAutoContinue(modalText, phase, seconds, copy);
+    if (modalText && $('#result-dialog').dataset.drawId === autoContinue.draw.id) paintAutoContinue(modalText, phase, seconds, copy, progress);
     const inlineText = $('#inline-auto-continue');
-    if (inlineText && inlineDraw?.id === autoContinue.draw.id) { inlineText.hidden = false; paintAutoContinue(inlineText, phase, seconds, copy); }
+    if (inlineText && inlineDraw?.id === autoContinue.draw.id) { inlineText.hidden = false; paintAutoContinue(inlineText, phase, seconds, copy, progress); }
   }
   async function tickAutoContinue() {
     const record = autoContinue;
@@ -5940,7 +6273,7 @@ if (typeof window !== 'undefined') {
     await resultPaint();
     if (resultPresentation !== presentation) return;
     presentation.ready = true;
-    ensureAutoContinue(draw, true);
+    ensureAutoContinue(draw);
   }
   function showResult(draw, review = false, fresh = false) {
     const prize = PRIZES[draw.awardKey] || LEGACY_PRIZES[draw.awardKey];
@@ -6016,7 +6349,7 @@ if (typeof window !== 'undefined') {
       if (!reducedMotion) await wait(350);
       await resultPaint();
       if (resultPresentation !== presentation) return;
-      presentation.ready = true; ensureAutoContinue(draw, true);
+      presentation.ready = true; ensureAutoContinue(draw);
     });
   }
   async function refreshWinners() {
