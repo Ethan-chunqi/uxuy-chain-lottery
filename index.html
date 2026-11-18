@@ -1072,7 +1072,7 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .hash-screens {
     min-height: 0;
     gap: calc(var(--tv-u) * .7);
-    align-content: center;
+    align-content: safe center;
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .display-label {
@@ -1111,7 +1111,7 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .hash-digits > span {
-    font-size: clamp(48px, 10cqw, 116px);
+    font-size: clamp(48px, min(10cqw, calc(var(--tv-u) * 6.1)), 116px);
     line-height: 1.08;
     letter-spacing: -.04em;
     border-radius: calc(var(--tv-u) * .45);
@@ -1356,6 +1356,7 @@ html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) #tv-toggl
   }
 
   html[data-display="tv"] body:not(.screen-view):not(.round-screen-view) .draw-status {
+    display: none;
     gap: calc(var(--tv-u) * .25);
     text-align: center;
   }
