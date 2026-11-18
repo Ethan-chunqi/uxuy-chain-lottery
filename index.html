@@ -12597,6 +12597,13 @@ if (typeof window !== 'undefined') {
     errorText('#draw-error', '');
     startDraw(animationPower);
   }
+  function leverEventTime(event) {
+    const now = performance.now();
+    let at = event?.timeStamp;
+    if (!Number.isFinite(at) || at <= 0) return now;
+    if (at > now) at -= performance.timeOrigin;
+    return Number.isFinite(at) && at >= 0 && at <= now ? at : now;
+  }
   function writeLeverMotion() {
     const lever = $('#lever');
     lever.style.setProperty('--lever-angle', `${leverMotion.angle.toFixed(3)}deg`);
@@ -12680,8 +12687,8 @@ if (typeof window !== 'undefined') {
     if (navigator.vibrate && !cancelled) navigator.vibrate(force > .8 ? [16, 18, 28] : 18);
     leverSettleTimer = setTimeout(() => { lever.classList.remove('is-rebounding'); $('.machine').classList.remove('lever-impulse'); lever.style.removeProperty('--release-power'); }, reducedMotion ? 100 : 1500);
   }
-  function currentLeverPower() {
-    return Math.max(0, Math.min(1, (performance.now() - chargeStarted) / 3000));
+  function currentLeverPower(at = performance.now()) {
+    return Math.max(0, Math.min(1, (at - chargeStarted) / 3000));
   }
   function resetLeverFeedback() {
     const lever = $('#lever');
@@ -12716,7 +12723,7 @@ if (typeof window !== 'undefined') {
       navigator.vibrate(0); leverHapticAt = 0;
     }
   }
-  function beginCharge(source = 'pointer', key = null) {
+  function beginCharge(source = 'pointer', key = null, startedAt = performance.now()) {
     if (chargeStarted || document.hidden || destroyed || isScreen || isRoundScreen || verifyId) return false;
     if (requestBusy || pendingId || revealing || autoContinue || (state?.lastDraw?.status === 'completed' && !state.lastDraw.acknowledgedAt)) {
       suppressLeverClickUntil = performance.now() + 800;
@@ -12726,7 +12733,7 @@ if (typeof window !== 'undefined') {
     }
     unlockAudio(); stopLeverMotion(false); resetLeverFeedback();
     const generation = ++chargeGeneration;
-    chargeStarted = performance.now(); chargeSource = source; chargeKey = source === 'keyboard' ? key : null;
+    chargeStarted = startedAt; chargeSource = source; chargeKey = source === 'keyboard' ? key : null;
     leverContact = { started: chargeStarted, angle: leverMotion.angle }; leverChargeSoundAt = 0;
     clearTimeout(leverSettleTimer); $('#lever').classList.remove('is-rebounding', 'pulled');
     $('#lever').classList.add('is-charging'); $('#lever').dataset.chargeBand = 'pull'; $('#lever-feedback').textContent = '按住蓄力，松手开转';
@@ -12747,9 +12754,9 @@ if (typeof window !== 'undefined') {
     };
     frame(); tone(110, .09, 'triangle', .025); return true;
   }
-  function releaseCharge(cancel = false, source = chargeSource, key = chargeKey) {
-    if (!chargeStarted || (!cancel && (source !== chargeSource || (source === 'keyboard' && key !== chargeKey)))) return;
-    const force = chargeSource === 'activation' ? 0 : currentLeverPower();
+  function releaseCharge(cancel = false, source = chargeSource, key = chargeKey, releasedAt = performance.now()) {
+    if (!chargeStarted || (!cancel && (releasedAt < chargeStarted || source !== chargeSource || (source === 'keyboard' && key !== chargeKey)))) return;
+    const force = chargeSource === 'activation' ? 0 : currentLeverPower(releasedAt);
     chargeGeneration++;
     chargeStarted = 0; chargeSource = null; chargeKey = null; leverContact = null; cancelAnimationFrame(chargeFrame); chargeFrame = null;
     const previousPointer = leverPointerId; leverPointerId = null;
@@ -12785,13 +12792,13 @@ if (typeof window !== 'undefined') {
     });
     $('#lever').addEventListener('pointerdown', event => {
       if ($('#lever').disabled || event.button > 0 || event.isPrimary === false) return;
-      event.preventDefault(); if (chargeStarted || !beginCharge('pointer')) return;
+      event.preventDefault(); if (chargeStarted || !beginCharge('pointer', null, leverEventTime(event))) return;
       leverPointerId = event.pointerId; leverStartX = event.clientX; leverStartY = event.clientY; leverSideLimit = $('#lever').clientWidth <= 80 ? 80 : 90;
       try { $('#lever').setPointerCapture(event.pointerId); } catch {}
     });
     for (const name of ['contextmenu', 'dragstart']) $('#lever').addEventListener(name, event => event.preventDefault());
     const movePointerCharge = event => {
-      if (chargeSource !== 'pointer' || event.pointerId !== leverPointerId) return;
+      if (chargeSource !== 'pointer' || event.pointerId !== leverPointerId || leverEventTime(event) < chargeStarted) return;
       event.preventDefault();
       const dx = event.clientX - leverStartX; const dy = event.clientY - leverStartY;
       if (dy < -24 || (Math.abs(dx) > leverSideLimit && dy < 16 && Math.abs(dx) > Math.abs(dy) * 2)) { releaseCharge(true); return; }
@@ -12799,27 +12806,27 @@ if (typeof window !== 'undefined') {
     $('#lever').addEventListener('pointermove', movePointerCharge);
     window.addEventListener('pointermove', movePointerCharge);
     const releasePointerCharge = event => {
-      if (chargeSource !== 'pointer' || event.pointerId !== leverPointerId) return;
+      if (chargeSource !== 'pointer' || event.pointerId !== leverPointerId || leverEventTime(event) < chargeStarted) return;
       event.preventDefault();
       movePointerCharge(event);
-      releaseCharge(false, 'pointer');
+      releaseCharge(false, 'pointer', null, leverEventTime(event));
     };
     $('#lever').addEventListener('pointerup', releasePointerCharge);
-    $('#lever').addEventListener('pointercancel', event => { if (chargeSource === 'pointer' && event.pointerId === leverPointerId) releaseCharge(true); });
-    window.addEventListener('pointercancel', event => { if (chargeSource === 'pointer' && event.pointerId === leverPointerId) releaseCharge(true); });
-    $('#lever').addEventListener('lostpointercapture', event => { if (chargeSource === 'pointer' && event.pointerId === leverPointerId) releaseCharge(true); });
+    $('#lever').addEventListener('pointercancel', event => { if (chargeSource === 'pointer' && event.pointerId === leverPointerId && leverEventTime(event) >= chargeStarted) releaseCharge(true); });
+    window.addEventListener('pointercancel', event => { if (chargeSource === 'pointer' && event.pointerId === leverPointerId && leverEventTime(event) >= chargeStarted) releaseCharge(true); });
+    $('#lever').addEventListener('lostpointercapture', event => { if (chargeSource === 'pointer' && event.pointerId === leverPointerId && leverEventTime(event) >= chargeStarted) releaseCharge(true); });
     window.addEventListener('pointerup', releasePointerCharge);
     $('#lever').addEventListener('keydown', event => {
       if (event.code !== 'Space' && event.code !== 'Enter') return;
       event.preventDefault(); suppressKeyboardClickUntil = performance.now() + 800;
-      if (!event.repeat && !chargeStarted) beginCharge('keyboard', event.code);
+      if (!event.repeat && !chargeStarted) beginCharge('keyboard', event.code, leverEventTime(event));
     });
     $('#lever').addEventListener('keyup', event => {
       if (event.code !== 'Space' && event.code !== 'Enter') return;
       event.preventDefault(); suppressKeyboardClickUntil = performance.now() + 800;
-      if (chargeSource === 'keyboard' && event.code === chargeKey) releaseCharge(false, 'keyboard', event.code);
+      if (chargeSource === 'keyboard' && event.code === chargeKey) releaseCharge(false, 'keyboard', event.code, leverEventTime(event));
     });
-    document.addEventListener('keyup', event => { if (chargeSource === 'keyboard' && event.code === chargeKey) { event.preventDefault(); releaseCharge(false, 'keyboard', event.code); } });
+    document.addEventListener('keyup', event => { if (chargeSource === 'keyboard' && event.code === chargeKey) { event.preventDefault(); releaseCharge(false, 'keyboard', event.code, leverEventTime(event)); } });
     $('#lever').addEventListener('blur', () => { if (chargeSource === 'keyboard') cancelLeverInteraction(); });
     window.addEventListener('blur', cancelLeverInteraction);
     $('#records-list').addEventListener('click', event => {
