@@ -10862,6 +10862,7 @@ if (typeof window !== 'undefined') {
     else { el.removeAttribute('href'); el.setAttribute('aria-disabled', 'true'); }
   }
   function setConnection(connected) {
+    connected = Boolean(connected && navigator.onLine !== false);
     liveReady = connected;
     document.body.classList.toggle('is-connected', connected);
     $$('.connection-label').forEach(el => { el.textContent = connected ? 'LIVE' : '等待网络'; });
