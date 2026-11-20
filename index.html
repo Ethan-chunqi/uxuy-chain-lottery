@@ -7879,6 +7879,23 @@ html[data-display][data-theme]
   font-weight: 400;
 }
 
+#result-dialog .result-block-height {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px .5em;
+  margin: 9px 0 0;
+  font-size: clamp(13px, 1.05vw, 21px);
+  line-height: 1.35;
+  font-variant-numeric: tabular-nums;
+}
+
+#result-dialog.winner-poster .result-block-height {
+  grid-row: 3;
+  color: var(--foil, inherit);
+}
+
 html[data-display][data-theme]
   body.event-v22:not(.screen-view):not(.round-screen-view)
   #result-dialog.winner-poster
@@ -10670,6 +10687,7 @@ window.UXUY_INLINE_ASSETS={"bag-light.svg":"data:image/svg+xml;base64,PHN2ZyB4bW
   const HAN = /[\u3400-\u9fff]/;
   const dictionary = new Map(Object.entries({
     '联网版 · BNB Chain 实时开奖 · 现场请使用同一浏览器': 'Online · Live BNB Chain draws · Use the same browser at the venue',
+    'BNB Chain 区块高度': 'BNB Chain block height',
     '服装颜色由开奖确定': 'Clothing colors are revealed in the draw',
     '匹克球拍': 'Pickleball Paddles', '宠物卫衣': 'Pet Hoodie', '短袖': 'T-Shirt',
     '超级大奖 · 每份一双': 'Jackpot · One pair per prize',
@@ -11480,6 +11498,10 @@ if (typeof window !== 'undefined') {
 
   function escapeHTML(value) { return String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char])); }
   function num(value) { return Number(value || 0).toLocaleString('en-US'); }
+  function selectedBlockLabel(draw) {
+    const height = Number(draw.selectedBlock);
+    return Number.isSafeInteger(height) && height > 0 ? `#${num(height)}` : '—';
+  }
   function probability(value) { const n = Number(value || 0); return `${(n <= 1 ? n * 100 : n).toFixed(2).replace(/\.00$/, '')}%`; }
   function suffixOf(draw) { return String(draw?.suffix || (draw?.txHash || draw?.hash || '').slice(-4)).toUpperCase(); }
   function hashOf(draw) { return String(draw?.txHash || draw?.hash || ''); }
@@ -12093,7 +12115,7 @@ if (typeof window !== 'undefined') {
     $('#round-caption').textContent = restored ? '已保存结果' : '本轮已定格';
     $('#round-progress').textContent = restored ? `已恢复 · 第 ${draw.position || '—'} 笔` : `已统计 ${draw.position} / ${draw.position}`;
     linkTo($('#round-hash-link'), hashOf(draw), shortHash(hashOf(draw)));
-    $('#round-block').textContent = `#${num(draw.selectedBlock)}`;
+    $('#round-block').textContent = selectedBlockLabel(draw);
     $('#round-display-description').textContent = `停在时间后的第 ${draw.position || '—'} 笔 · 区块内第 ${Number(draw.txIndex) + 1} 笔`;
     if (navigator.vibrate && !isRoundScreen && !restored) navigator.vibrate([25, 30, 45]);
     return true;
@@ -12107,6 +12129,7 @@ if (typeof window !== 'undefined') {
     $('#round-verdict').classList.toggle('is-empty-result', !prize);
     if (prize) $('#inline-award').textContent = `${prize.name} × 1`;
     else $('#inline-award').innerHTML = `${emptySparkles('inline-empty-symbol')}<span class="inline-empty-label">本轮未中奖</span>`;
+    $('#inline-block-height').textContent = selectedBlockLabel(draw);
     $('#inline-bag').hidden = !prize;
     $('#inline-bag').textContent = prize ? bagPending ? '附属奖励待揭晓' : draw.bag ? '＋ UXUY 手提袋 × 1' : '未加赠 UXUY 手提袋' : ''; 
     let next = $('#inline-auto-continue');
@@ -12157,7 +12180,7 @@ if (typeof window !== 'undefined') {
     $('#number-caption').textContent = `已锁定 · 第 ${draw.position} 笔`;
     $('.number-window').classList.add('number-locked');
     $('#selector-state').textContent = `取此时间后，按链上顺序的第 ${draw.position} 笔交易。`;
-    $('#selector-source').textContent = draw.status === 'completed' ? `已确认 #${num(draw.selectedBlock)} · 区块内第 ${Number(draw.txIndex) + 1} 笔 · 链上时间 ${blockTime(draw).time}（${hasChainMilliseconds(draw) ? '原生毫秒' : '秒精度'}）` : `锚点 #${num(draw.anchorBlock)} · 等待未来交易最终确认`;
+    $('#selector-source').textContent = draw.status === 'completed' ? `已确认 ${selectedBlockLabel(draw)} · 区块内第 ${Number(draw.txIndex) + 1} 笔 · 链上时间 ${blockTime(draw).time}（${hasChainMilliseconds(draw) ? '原生毫秒' : '秒精度'}）` : `锚点 #${num(draw.anchorBlock)} · 等待未来交易最终确认`;
     if (draw.status === 'pending') paintStagePhase('waiting');
     return true;
   }
@@ -12332,7 +12355,7 @@ if (typeof window !== 'undefined') {
   }
   function renderLastDraw(draw) {
     if (!draw || draw.status !== 'completed') return;
-    renderHTML('#screen-last', `<b>${escapeHTML(suffixOf(draw))}</b>${escapeHTML(draw.awardName || PRIZES[draw.awardKey]?.name || '未中奖')}<small>${bonusIsVisible(draw) && draw.bag ? '另获 UXUY 手提袋加赠 · ' : ''}${escapeHTML(datetime(draw.completedAt))} · ${pages ? '本机活动' : mode === 'formal' ? '正式场' : '预览场'}</small>`);
+    renderHTML('#screen-last', `<b>${escapeHTML(suffixOf(draw))}</b>${escapeHTML(draw.awardName || PRIZES[draw.awardKey]?.name || '未中奖')}<small>${bonusIsVisible(draw) && draw.bag ? '另获 UXUY 手提袋加赠 · ' : ''}${escapeHTML(datetime(draw.completedAt))} · ${pages ? '本机活动' : mode === 'formal' ? '正式场' : '预览场'} · <span>BNB Chain 区块高度</span> ${selectedBlockLabel(draw)}</small>`);
   }
   async function resultPaint() {
     if (document.hidden) await new Promise(resolve => { const onVisible = () => { if (!document.hidden) { document.removeEventListener('visibilitychange', onVisible); resolve(); } }; document.addEventListener('visibilitychange', onVisible); });
@@ -12469,12 +12492,13 @@ if (typeof window !== 'undefined') {
       <p class="result-eyebrow">${won ? review ? '中奖记录' : '恭喜中奖' : '开奖结果'}</p>
       ${won && rarity !== 'empty' ? `<p class="result-rarity-badge">${escapeHTML(RARITY[draw.awardKey])}</p>` : ''}
       <h2>${won ? `<span class="award-title">${escapeHTML(awardTitle)}</span>${awardVariant ? `<span class="award-variant">${escapeHTML(awardVariant)}</span>` : ''}` : '本轮未中奖'}</h2>
+      <p class="result-block-height"><span>BNB Chain 区块高度</span> <strong>${selectedBlockLabel(draw)}</strong></p>
       <p class="result-subtitle">${pages ? '结果已保存' : preview ? '预览结果' : '结果已保存'}</p>
       ${automatic ? '<p id="result-countdown" class="result-countdown auto-continue" role="status" aria-atomic="true" data-state="presenting">正在展示奖品</p>' : ''}
       <section class="result-lock-panel" aria-label="本轮锁定数字与毫秒时间"><div class="result-number"><span>锁定数字</span><b>${draw.position || '—'}</b></div><div class="result-locked-time"><span>${clockOwner}锁定时间 · UTC+08:00</span><small>${escapeHTML(locked.date)}</small><strong>${escapeHTML(locked.time)}</strong><p>取此时间后的第 ${draw.position || '—'} 笔交易</p></div></section>
       ${won ? `<div class="result-art result-main-art">${prize.image ? `<img class="product-photo" src="${window.UXUY_INLINE_ASSETS[prize.image]}" alt="${escapeHTML(prize.name)}">` : `<span class="result-image-fallback">${escapeHTML(prize.name)}</span>`}</div>` : emptySparkles('result-empty-symbol')}
       ${bonusMarkup(draw, !automatic || bonusIsVisible(draw))}
-      <div class="result-receipt"><div class="receipt-row"><span>本轮哈希尾号</span><strong>${escapeHTML(suffixOf(draw))}</strong></div><div class="receipt-row"><span>命中奖区</span><span>${escapeHTML(target)}</span></div><div class="receipt-row"><span>目标交易顺位</span><span>锁定时间后第 ${draw.globalTransactionOrdinal || draw.position || '—'} 笔</span></div><div class="receipt-row"><span>区块 / 区块内位置</span><span>#${num(draw.selectedBlock)} / 第 ${Number.isInteger(draw.txIndex) ? draw.txIndex + 1 : '—'} 笔</span></div><div class="receipt-row chain-time-row"><span>链上区块时间<br>${hasChainMilliseconds(draw) ? '原生毫秒' : '秒精度（历史记录）'}</span><span>${escapeHTML(chain.full)}<br>UTC+08:00</span></div><a class="receipt-hash" href="${chainLink(hash)}" target="_blank" rel="noopener">${escapeHTML(hash)}</a><div class="receipt-links"><a href="${chainLink(hash)}" target="_blank" rel="noopener">BscScan 查看交易 ↗</a><a href="${reviewLink(draw.id, drawMode)}" target="_blank" rel="noopener">本轮完整查验 ↗</a></div></div>
+      <div class="result-receipt"><div class="receipt-row"><span>本轮哈希尾号</span><strong>${escapeHTML(suffixOf(draw))}</strong></div><div class="receipt-row"><span>命中奖区</span><span>${escapeHTML(target)}</span></div><div class="receipt-row"><span>目标交易顺位</span><span>锁定时间后第 ${draw.globalTransactionOrdinal || draw.position || '—'} 笔</span></div><div class="receipt-row"><span>区块 / 区块内位置</span><span>${selectedBlockLabel(draw)} / 第 ${Number.isInteger(draw.txIndex) ? draw.txIndex + 1 : '—'} 笔</span></div><div class="receipt-row chain-time-row"><span>链上区块时间<br>${hasChainMilliseconds(draw) ? '原生毫秒' : '秒精度（历史记录）'}</span><span>${escapeHTML(chain.full)}<br>UTC+08:00</span></div><a class="receipt-hash" href="${chainLink(hash)}" target="_blank" rel="noopener">${escapeHTML(hash)}</a><div class="receipt-links"><a href="${chainLink(hash)}" target="_blank" rel="noopener">BscScan 查看交易 ↗</a><a href="${reviewLink(draw.id, drawMode)}" target="_blank" rel="noopener">本轮完整查验 ↗</a></div></div>
       ${automatic ? '' : '<button type="button" class="primary-button" id="close-result">关闭</button>'}<p class="result-pickup-note">${review ? `轮次 ${escapeHTML(draw.id)} · ${escapeHTML(datetime(draw.completedAt))}` : '结果自动保存'}</p>
     </div>`;
     const receipt = $('.result-receipt');
@@ -12500,7 +12524,7 @@ if (typeof window !== 'undefined') {
     }
     const resultBody = $('.result-body');
     const giftReveal = document.createElement('div'); giftReveal.className = 'result-gift-reveal';
-    $$('.result-eyebrow,.result-rarity-badge,h2,.result-subtitle,.result-art,.empty-symbol,.bonus-reveal', resultBody).forEach(node => giftReveal.append(node));
+    $$('.result-eyebrow,.result-rarity-badge,h2,.result-block-height,.result-subtitle,.result-art,.empty-symbol,.bonus-reveal', resultBody).forEach(node => giftReveal.append(node));
     const detailsReveal = document.createElement('div'); detailsReveal.className = 'result-details-reveal';
     [...resultBody.children].forEach(node => detailsReveal.append(node));
     resultBody.append(giftReveal, detailsReveal);
@@ -13022,7 +13046,7 @@ if (typeof window !== 'undefined') {
           <div class="power-console"><div class="power-readout"><span class="lever-feedback" id="lever-feedback" aria-live="polite">按住蓄力，松手开转</span><strong id="lever-power-value">0%</strong></div><div class="lever-meter" id="lever-meter" role="meter" aria-label="拉杆蓄力，仅影响动画" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div></div>
           <p class="keyboard-hint" id="keyboard-hint">按住鼠标、触屏或空格 / Enter 蓄力，松手开奖。</p><p id="draw-error" class="error-message" role="alert" hidden></p>
         </div>
-        <div class="round-verdict-slot"><div class="result-placeholder"><span>本轮结果</span><strong>等待开奖</strong></div><div class="round-verdict" id="round-verdict" hidden><div class="inline-award-copy"><p id="inline-result-kicker">本轮结果</p><strong id="inline-award">—</strong><span id="inline-bag">—</span></div><div class="inline-result-actions"><p id="inline-auto-continue" class="auto-continue" hidden></p><button type="button" id="inline-details">链上凭证 ↗</button></div></div></div>
+        <div class="round-verdict-slot"><div class="result-placeholder"><span>本轮结果</span><strong>等待开奖</strong></div><div class="round-verdict" id="round-verdict" hidden><div class="inline-award-copy"><p id="inline-result-kicker">本轮结果</p><strong id="inline-award">—</strong><span>BNB Chain 区块高度 <b id="inline-block-height">—</b></span><span id="inline-bag">—</span></div><div class="inline-result-actions"><p id="inline-auto-continue" class="auto-continue" hidden></p><button type="button" id="inline-details">链上凭证 ↗</button></div></div></div>
       </div>
       <aside class="recent-rounds-panel" aria-labelledby="recent-rounds-title"><header class="recent-rounds-head"><div><p class="eyebrow">RECENT DRAWS</p><h2 id="recent-rounds-title">最近10轮</h2></div><span class="recent-rounds-live">实时更新</span></header><ol id="recent-rounds-list" class="recent-rounds-list" aria-label="最近10轮开奖记录"></ol></aside>
     </section>
